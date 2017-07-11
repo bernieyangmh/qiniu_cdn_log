@@ -25,6 +25,77 @@ class DataCore(object):
 
 
 
+    def generate_data(self):
+        self._get_chunks()
+        if self.chunks:
+            self.data = self._aggregate_data(self.chunks)
+            self._change_data(self.data)
+            self.chunks = None
+            return self.data
+
+    def get_url_traffic_data(self, *args, **kwargs):
+        return self._set_url_traffic_data(*args, **kwargs)
+
+    def get_url_count_data(self, *args, **kwargs):
+        return self._set_url_count_data(*args, **kwargs)
+
+    def get_ip_traffic_data(self, *args, **kwargs):
+        return self._set_ip_traffic_data(*args, **kwargs)
+
+    def get_ip_count_data(self, *args, **kwargs):
+        return self._set_ip_count_data(*args, **kwargs)
+
+    def get_ip_url_traffic_count(self, *args, **kwargs):
+        return self._set_ip_url_traffic_count(*args, **kwargs)
+
+    def get_total_status_code_count(self, *args, **kwargs):
+        return self._set_total_status_code_count(*args, **kwargs)
+
+    def get_ip_url_status_code_count(self, *args, **kwargs):
+        return self._set_ip_url_status_code_count(*args, **kwargs)
+
+    def get_url_status_code_count(self, *args, **kwargs):
+        return self._set_url_status_code_count(*args, **kwargs)
+
+    def get_ip_status_code_count(self, *args, **kwargs):
+        return self._set_ip_status_code_count(*args, **kwargs)
+
+    def _set_url_traffic_data(self, *args, **kwargs):
+        self.url_traffic_data = DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
+        return self.url_traffic_data
+
+    def _set_url_count_data(self, *args, **kwargs):
+        self.url_count_data = DataAnalysisMethod.url_count(self.data, *args, **kwargs)
+        return self.url_count_data
+
+    def _set_ip_traffic_data(self, *args, **kwargs):
+        self.ip_traffic_data = DataAnalysisMethod.ip_traffic(self.data, *args, **kwargs)
+        return self.ip_traffic_data
+
+    def _set_ip_count_data(self, *args, **kwargs):
+        self.ip_count_data = DataAnalysisMethod.ip_count(self.data, *args, **kwargs)
+        return self.ip_count_data
+
+    def _set_ip_url_traffic_count(self, *args, **kwargs):
+        self.ip_url_traffic_count = DataAnalysisMethod.ip_url_traffic_count(self.data, *args, **kwargs)
+        return self.ip_url_traffic_count
+
+    def _set_total_status_code_count(self, *args, **kwargs):
+        self.total_status_code_count = DataAnalysisMethod.total_status_code_count(self.data, *args, **kwargs)
+        return self.total_status_code_count
+
+    def _set_ip_url_status_code_count(self, *args, **kwargs):
+        self.ip_url_status_code_count = DataAnalysisMethod.ip_url_status_code_count(self.data, *args, **kwargs)
+        return self.ip_url_status_code_count
+
+    def _set_url_status_code_count(self, *args, **kwargs):
+        self.url_status_code_count = DataAnalysisMethod.url_status_code_count(self.data, *args, **kwargs)
+        return self.url_status_code_count
+
+    def _set_ip_status_code_count(self, *args, **kwargs):
+        self.ip_status_code_count = DataAnalysisMethod.ip_status_code_count(self.data, *args, **kwargs)
+        return self.ip_status_code_count
+
     def _get_files(self):
         return GetConfig().get_log()
 
@@ -60,28 +131,6 @@ class DataCore(object):
                            'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize', 8: 'referer', 9: 'UserAgent'
                            }, inplace=True)
         self.data = dd
-
-    def generate_data(self):
-        self._get_chunks()
-        if self.chunks:
-            self.data = self._aggregate_data(self.chunks)
-            self._change_data(self.data)
-            self.chunks = None
-            return self.data
-
-    def get_url_traffic_data(self, *args, **kwargs):
-        self._set_url_traffic_data(*args, **kwargs)
-        return self.url_traffic_data
-
-    def get_url_count_data(self, *args, **kwargs):
-        self._set_url_count_data(*args, **kwargs)
-        return self.url_count_data
-
-    def _set_url_traffic_data(self, *args, **kwargs):
-        self.url_traffic_data = DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
-
-    def _set_url_count_data(self, *args, **kwargs):
-        self.url_count_data = DataAnalysisMethod.url_count(self.data, *args, **kwargs)
 
 
 if __name__ == '__main__':

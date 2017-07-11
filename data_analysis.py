@@ -23,7 +23,7 @@ class DataAnalysisMethod(object):
         return datacore['ip'].value_counts()(*args, **kwargs)
 
     @staticmethod
-    def ip_count(datacore, *args, **kwargs):
+    def ip_url_traffic_count(datacore, *args, **kwargs):
         return datacore.groupby(['ip', 'url'])['TrafficSize'].value_counts()
 
     @staticmethod

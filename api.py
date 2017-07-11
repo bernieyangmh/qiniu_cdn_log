@@ -10,7 +10,7 @@ from data_display import DataDisplay
 app = Flask(__name__)
 
 api_list = {
-    'show_url_traffic_data': u'show_url_traffic_data',
+    '/show_url_traffic_data': u'''show all url's traffic''',
 }
 
 
@@ -25,7 +25,7 @@ def index():
 
 @app.route('/show_url_traffic_data')
 def show_url_traffic_data():
-    d = DataCore()
+    d = generate_datacore()
     d.generate_data()
     d.get_url_traffic_data(ascending=False)
     return d.url_traffic_data.to_json(orient='split')

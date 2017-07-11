@@ -19,10 +19,9 @@ class DataDisplay(object):
 
     def _construct_figure_for_url_traffic(self, figsize=(12,7), *args, **kwargs):
         self.fig, self.ax0= plt.subplots(figsize=figsize)
-        print(self.ax0)
         plt.subplots_adjust(*args, **kwargs)
 
-    def _construct_axes_for_url_traffic(self):
+    def _construct_axes_for_url_traffic_barh(self):
         # 坐标轴
         self.ax0.set_xlim([0, 10 ** len(str(self.data.url_traffic_data.max()))])
 
@@ -38,22 +37,27 @@ class DataDisplay(object):
         self.ax0.xaxis.set_major_formatter(formatter)
         self.data.url_traffic_data.plot(kind='barh', y="Traffic", x="URL", ax=self.ax0)
 
-    def show_url_traffic_graphic(self):
+    def show_url_traffic_graphic_barh(self):
         self._construct_figure_for_url_traffic(left=0.4)
-        self._construct_axes_for_url_traffic()
+        self._construct_axes_for_url_traffic_barh()
         plt.show()
+
+    def show_url_traffic_graphic_line(self):
+        self._construct_axes_for_url_traffic_barh()
+        self._construct_axes_for_url_traffic_barh()
+
+    def show_url_traffic_graphic_bar(self):
+        pass
+
+    def show_url_traffic_graphic_area(self):
+        pass
+
+    def show_url_traffic_graphic_density(self):
+        pass
 
 
 if __name__ == '__main__':
     d = DataCore()
     d.generate_data()
     d.get_url_traffic_data()
-    a= (d.url_traffic_data)
-    print(a.to_json(orient='split'))
-
     dd = DataDisplay(d)
-
-    dd.show_url_traffic_graphic()
-
-
-    import requests

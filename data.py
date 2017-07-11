@@ -70,19 +70,23 @@ class DataCore(object):
             return self.data
 
     def get_url_traffic_data(self, *args, **kwargs):
-        self._get_url_traffic_data(*args, **kwargs)
+        self._set_url_traffic_data(*args, **kwargs)
         return self.url_traffic_data
 
-    def _get_url_traffic_data(self, *args, **kwargs):
+    def get_url_count_data(self, *args, **kwargs):
+        self._set_url_count_data(*args, **kwargs)
+        return self.url_count_data
+
+    def _set_url_traffic_data(self, *args, **kwargs):
         self.url_traffic_data = DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
 
-
+    def _set_url_count_data(self, *args, **kwargs):
+        self.url_count_data = DataAnalysisMethod.url_count(self.data, *args, **kwargs)
 
 
 if __name__ == '__main__':
     d = DataCore()
     d.generate_data()
     d.get_url_traffic_data()
-    # print(d.data)
     print(d.url_traffic_data)
 

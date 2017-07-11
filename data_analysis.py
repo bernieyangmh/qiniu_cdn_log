@@ -7,10 +7,10 @@ __author__ = 'berniey'
 class DataAnalysisMethod(object):
 
     @staticmethod
-    def url_traffic(datacore):
-        return datacore.groupby('url').sum()['TrafficSize']
+    def url_traffic(datacore, *args, **kwargs):
+        return datacore.groupby('url').sum()['TrafficSize'].sort_values(*args, **kwargs)
 
     @staticmethod
-    def url_count(datacore):
-        return datacore['url'].value_counts()
+    def url_count(datacore, ascending):
+        return datacore['url'].value_counts(ascending)
 

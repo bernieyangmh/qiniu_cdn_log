@@ -93,3 +93,6 @@ ENV/
 
 # celery
 .db
+
+#log path
+log_path/

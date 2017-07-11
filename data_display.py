@@ -48,7 +48,12 @@ if __name__ == '__main__':
     d = DataCore()
     d.generate_data()
     d.get_url_traffic_data()
+    a= (d.url_traffic_data)
+    print(a.to_json(orient='split'))
+
     dd = DataDisplay(d)
-    dd.show_url_traffic()
+
+    dd.show_url_traffic_graphic()
 
 
+    import requests

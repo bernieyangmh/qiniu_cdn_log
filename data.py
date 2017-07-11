@@ -69,12 +69,12 @@ class DataCore(object):
             self.chunks = None
             return self.data
 
-    def get_url_traffic_data(self):
-        self._get_url_traffic_data()
+    def get_url_traffic_data(self, *args, **kwargs):
+        self._get_url_traffic_data(*args, **kwargs)
         return self.url_traffic_data
 
-    def _get_url_traffic_data(self):
-        self.url_traffic_data = DataAnalysisMethod.url_traffic(self.data)
+    def _get_url_traffic_data(self, *args, **kwargs):
+        self.url_traffic_data = DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
 
 
 

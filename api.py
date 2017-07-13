@@ -15,7 +15,7 @@ api_list = {
 
 
 def generate_datacore():
-    return DataCore().generate_data()
+    return DataCore()
 
 
 @app.route('/')
@@ -34,9 +34,10 @@ def show_url_traffic_data():
 @app.route('/show_url_traffic_graphic')
 def show_url_traffic_graphic():
     d = generate_datacore()
+    d.generate_data()
     d.get_url_traffic_data()
     dd = DataDisplay(d)
-    dd.show_url_traffic_graphic()
+    dd.show_url_traffic_graphic_barh()
     return "look python graphic"
 
 

@@ -96,3 +96,6 @@ ENV/
 
 #log path
 log_path/
+
+#config
+.ini

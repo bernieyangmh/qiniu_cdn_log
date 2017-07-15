@@ -45,8 +45,11 @@ def show_url_traffic_graphic_barh():
 
 
 @app.route('/show_url_traffic_graphic', methods=['GET'])
-def show_url_traffic_graphic_line():
-    kind = request.args.get('kind', 'line')
+def show_url_traffic_graphic():
+    graphic_kinds = ['kde', 'bar', 'barh']
+    kind = request.args.get('kind', 'bar')
+    if kind not in graphic_kinds:
+        return "you must have a choice among 'kde', 'bar' or 'barh' "
     d = generate_datacore()
     print(id(d))
     d.generate_data()
@@ -54,12 +57,6 @@ def show_url_traffic_graphic_line():
     dd = DataDisplay(d)
     dd.show_url_traffic_graphic(kind)
     return d.get_url_traffic_data().to_frame().to_json(orient='index')
-
-
-@app.route('/delete/', methods=['GET'])
-def delete():
-    kind = request.args.get('kind')
-    pass
 
 
 if __name__ == '__main__':

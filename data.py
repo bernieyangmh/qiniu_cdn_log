@@ -27,10 +27,10 @@ class DataCore(object):
 
     def generate_data(self):
         self._get_chunks()
-        if self.chunks:
+        if (self.chunks or self.data) or isinstance(self.data, pd.core.frame.DataFrame):
             self.data = self._aggregate_data(self.chunks)
             self._change_data(self.data)
-            self.chunks = None
+            self.chunks = []
             return self.data
 
     def get_url_traffic_data(self, *args, **kwargs):

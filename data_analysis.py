@@ -8,7 +8,6 @@ class DataAnalysisMethod(object):
 
     @staticmethod
     def url_traffic(datacore, *args, **kwargs):
-        print(datacore.groupby('url').sum()['TrafficSize'].sort_values(*args, **kwargs)[0:10])
         return datacore.groupby('url').sum()['TrafficSize'].sort_values(*args, **kwargs)[0:10]
 
     @staticmethod
@@ -43,9 +42,9 @@ class DataAnalysisMethod(object):
     def ip_status_code_count(datacore, *args, **kwargs):
         return datacore.groupby('ip')['StatusCode'].value_counts()(*args, **kwargs)
 
-    @staticmethod
-    def url(datacore, *args, **kwargs):
-        return datacore.groupby('url')
+    # @staticmethod
+    # def url(datacore, *args, **kwargs):
+    #     return datacore.groupby('url')
 
 
 

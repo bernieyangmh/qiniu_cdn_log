@@ -6,6 +6,8 @@ __author__ = 'bernie'
 from flask import Flask, jsonify, request
 from data import DataCore
 from data_display import DataDisplay
+from util import traffic_decimal
+
 
 app = Flask(__name__)
 
@@ -31,14 +33,33 @@ def show_url_traffic_data():
     return d.url_traffic_data.to_json(orient='split')
 
 
-@app.route('/show_url_traffic_graphic')
-def show_url_traffic_graphic():
+@app.route('/show_url_traffic_graphic_barh')
+def show_url_traffic_graphic_barh():
     d = generate_datacore()
+    print(id(d))
     d.generate_data()
     d.get_url_traffic_data()
     dd = DataDisplay(d)
     dd.show_url_traffic_graphic_barh()
     return "look python graphic"
+
+
+@app.route('/show_url_traffic_graphic', methods=['GET'])
+def show_url_traffic_graphic_line():
+    kind = request.args.get('kind', 'line')
+    d = generate_datacore()
+    print(id(d))
+    d.generate_data()
+    d.get_url_traffic_data()
+    dd = DataDisplay(d)
+    dd.show_url_traffic_graphic(kind)
+    return d.get_url_traffic_data().to_frame().to_json(orient='index')
+
+
+@app.route('/delete/', methods=['GET'])
+def delete():
+    kind = request.args.get('kind')
+    pass
 
 
 if __name__ == '__main__':

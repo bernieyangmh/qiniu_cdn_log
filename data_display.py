@@ -37,26 +37,25 @@ class DataDisplay(object):
         self.ax0.xaxis.set_major_formatter(formatter)
         self.datacare.get_url_traffic_data().plot(kind='barh', y="Traffic", x="URL", ax=self.ax0)
 
-    def _drawing(self, x_str, y_str, title, kind, figsize, xlabel, ylabel, line_color='r', fig_color='b', funciton=None, *args, **kwargs):
+    def _drawing(self, data, use_index, x_str, y_str, title, kind, figsize, xlabel, ylabel, line_color='r', fig_color='b', funciton=None, *args, **kwargs):
         self._construct_figure(figsize, *args, **kwargs)
-        self._construct_guideline_avg(color=line_color)
-        self._construct_axe(funciton)
-        self._chose_graphic_kind(xlabel=xlabel, ylabel=ylabel, kind=kind, color=fig_color, x=x_str, y=y_str, title=title)
+        self._construct_guideline_avg(data, color=line_color)
+        self._construct_axe(data, funciton)
+        self._chose_graphic_kind(data, kind, use_index, xlabel=xlabel, ylabel=ylabel, color=fig_color, x_str=x_str, y_str=y_str, title=title)
         plt.show()
 
     def _construct_figure(self, figsize, *args, **kwargs):
         self.fig, self.ax0 = plt.subplots(figsize=figsize)
         plt.subplots_adjust(*args, **kwargs)
 
-    def _construct_guideline_avg(self, color):
+    def _construct_guideline_avg(self, data, color):
         # 添加一条显示平均数的辅助线
-        avg = self.datacare.get_url_traffic_data().mean()
+        avg = data.mean()
         self.ax0.axvline(x=avg, color=color, label='Average', linestyle='--', linewidth=1)
 
-    def _construct_axe(self, funciton):
+    def _construct_axe(self, data, funciton):
         # 坐标轴的长度
-        self.ax0.set_xlim([0, 10 ** len(str(self.datacare.get_url_traffic_data().max()))])
-
+        self.ax0.set_xlim([0, 10 ** len(str(data.max()))])
         # 设置title和label
 
         # 函数，改变x轴的单位
@@ -65,20 +64,41 @@ class DataDisplay(object):
             formatter = FuncFormatter(funciton)
             self.ax0.xaxis.set_major_formatter(formatter)
 
-    def _chose_graphic_kind(self, title, xlabel, ylabel, kind, color, x, y):
+    def _chose_graphic_kind(self, data, use_index, kind, xlabel, ylabel, color, x_str, y_str, title):
         self.ax0.set(title=title, xlabel=xlabel, ylabel=ylabel)
-        self.datacare.get_url_traffic_data().plot(kind=kind, color=color, ax=self.ax0)
+        print(use_index)
+        print(type(use_index))
+        data.plot(kind=kind, color=color, ax=self.ax0, use_index=use_index)
 
     def show_url_traffic_graphic_barh(self):
         self._construct_figure_for_url_traffic_for_example(left=0.4)
         self._construct_axes_for_url_traffic_barh_example()
         plt.show()
 
-    def show_url_traffic_graphic(self, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN', figsize=(12, 7), *args, **kwargs):
-        self._drawing(x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url', line_color='r', fig_color='b', *args, **kwargs)
+    def show_url_traffic_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+                                 figsize=(12, 7), *args, **kwargs):
+        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
+                      line_color='r', fig_color='b', *args, **kwargs)
 
-    def show_url_count_graphic_bar(self):
-        pass
+    def show_url_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+                               figsize=(12, 7), *args, **kwargs):
+        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
+                      line_color='r', fig_color='b', *args, **kwargs)
+
+    def show_ip_traffic_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+                                figsize=(12, 7), *args, **kwargs):
+        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
+                      line_color='r', fig_color='b', *args, **kwargs)
+
+    def show_ip_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+                                figsize=(12, 7), *args, **kwargs):
+        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
+                      line_color='r', fig_color='b', *args, **kwargs)
+
+    def show_ip_url_traffic_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+                              figsize=(12, 7), *args, **kwargs):
+        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
+                      line_color='r', fig_color='b', *args, **kwargs)
 
 
 if __name__ == '__main__':

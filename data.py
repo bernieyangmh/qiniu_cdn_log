@@ -45,9 +45,6 @@ class DataCore(object):
     def get_ip_count_data(self, *args, **kwargs):
         return self._set_ip_count_data(*args, **kwargs)
 
-    def get_ip_url_traffic_count(self, *args, **kwargs):
-        return self._set_ip_url_traffic_count(*args, **kwargs)
-
     def get_total_status_code_count(self, *args, **kwargs):
         return self._set_total_status_code_count(*args, **kwargs)
 
@@ -71,9 +68,6 @@ class DataCore(object):
 
     def _set_ip_count_data(self, *args, **kwargs):
         return DataAnalysisMethod.ip_count(self.data, *args, **kwargs)
-
-    def _set_ip_url_traffic_count(self, *args, **kwargs):
-        return DataAnalysisMethod.ip_url_traffic_count(self.data, *args, **kwargs)
 
     def _set_total_status_code_count(self, *args, **kwargs):
         return DataAnalysisMethod.total_status_code_count(self.data, *args, **kwargs)

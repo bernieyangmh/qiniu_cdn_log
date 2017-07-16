@@ -12,39 +12,32 @@ class DataAnalysisMethod(object):
 
     @staticmethod
     def url_count(datacore, *args, **kwargs):
-        return datacore['url'].value_counts(*args, **kwargs)
+        return datacore['url'].value_counts(*args, **kwargs).rename('count')
 
     @staticmethod
     def ip_traffic(datacore, *args, **kwargs):
-        return datacore.groupby('ip').sum()['TrafficSize'].sort_values(*args, **kwargs)
+        return datacore.groupby('ip').sum()['TrafficSize'].sort_values(*args, **kwargs)[0:100]
 
     @staticmethod
     def ip_count(datacore, *args, **kwargs):
-        return datacore['ip'].value_counts()(*args, **kwargs)
-
-    @staticmethod
-    def ip_url_traffic_count(datacore, *args, **kwargs):
-        return datacore.groupby(['ip', 'url'])['TrafficSize'].value_counts()(*args, **kwargs)
+        return datacore['ip'].value_counts(*args, **kwargs)[0:100]
 
     @staticmethod
     def total_status_code_count(datacore, *args, **kwargs):
-        return datacore['StatusCode'].value_counts()(*args, **kwargs)
+        return datacore['StatusCode'].value_counts(*args, **kwargs)[0:100]
 
     @staticmethod
     def ip_url_status_code_count(datacore, *args, **kwargs):
-        return datacore.groupby(['ip', 'url'])['StatusCode'].value_counts()(*args, **kwargs)
+        return datacore.groupby(['ip', 'url'])['StatusCode'].value_counts(*args, **kwargs)[0:100]
 
     @staticmethod
     def url_status_code_count(datacore, *args, **kwargs):
-        return datacore.groupby('url')['StatusCode'].value_counts()(*args, **kwargs)
+        return datacore.groupby('url')['StatusCode'].value_counts(*args, **kwargs)[0:100]
 
     @staticmethod
     def ip_status_code_count(datacore, *args, **kwargs):
-        return datacore.groupby('ip')['StatusCode'].value_counts()(*args, **kwargs)
+        return datacore.groupby('ip')['StatusCode'].value_counts(*args, **kwargs)[0:100]
 
-    # @staticmethod
-    # def url(datacore, *args, **kwargs):
-    #     return datacore.groupby('url')
 
 
 

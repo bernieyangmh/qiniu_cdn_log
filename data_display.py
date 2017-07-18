@@ -66,6 +66,7 @@ class DataDisplay(object):
 
     def _chose_graphic_kind(self, data, use_index, kind, xlabel, ylabel, color, x_str, y_str, title):
         self.ax0.set(title=title, xlabel=xlabel, ylabel=ylabel)
+        print(use_index)
         data.plot(kind=kind, color=color, ax=self.ax0, use_index=use_index, fontsize=10, secondary_y=False)
 
     def show_url_traffic_graphic_barh(self):

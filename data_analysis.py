@@ -9,7 +9,7 @@ class DataAnalysisMethod(object):
 
     @staticmethod
     def url_traffic(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('url').sum()['TrafficSize'].sort_values()
+        aim_data = datacore.groupby('url').sum()['TrafficSize'].sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod

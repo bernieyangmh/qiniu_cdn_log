@@ -52,13 +52,15 @@ def traffic_decimal(x, pos):
 
 
 def data_after_argument(aim_data, *args, **kwargs):
+
     l1 = kwargs.get('limit')[0]
     l2 = kwargs.get('limit')[1]
-    if l1 and l2:
+    print(l1, l2)
+    if l1 >= 0 and l2:
         return aim_data[l1:l2]
-    if l1 and not l2:
+    if l1 >= 0 and not l2:
         return aim_data[l1:]
-    if not l1 and l2:
+    if not l1 and l2 >= 0:
         return aim_data[:l2]
     else:
         return aim_data
@@ -66,9 +68,9 @@ def data_after_argument(aim_data, *args, **kwargs):
 
 def parse_limit(limit):
     if not re_limit.match(limit):
-        return '', ''
+        return 0, 0
     a = limit.split(':')
-    a1 = int(a[0]) if a[0] != '' else None
+    a1 = int(a[0]) if a[0] != '' else 0
     a2 = int(a[1]) if a[1] != '' else None
     return a1, a2
 
@@ -81,4 +83,6 @@ def parse_requests(request):
     if kind not in graphic_kinds:
         error = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
     use_index = request.args.get('use_index', True)
+    if use_index in ['False', 'false', 'FALSE']:
+        use_index = False
     return error, kind, limit, use_index

@@ -28,13 +28,15 @@ def show_url_traffic_graphic():
     error, kind, limit, use_index = parse_requests(request)
     if error:
         return error
-
     d = DataCore()
     d.generate_data()
     data = d.get_url_traffic_data(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
-        dd.show_graphic(data, kind, use_index)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
+        dd.show_graphic(data, kind, use_index, xlabel='xlabel', ylabel='ylabel',
+                        line_color='r', fig_color='b', funciton=traffic_decimal,
+                        x_str='xxxxx', y_str='yyyy', title='QiNiu CDN', figsize=(12, 7)
+                        )
     return data.to_frame().to_json(orient='index')
 
 
@@ -47,8 +49,8 @@ def url_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_url_count_data(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -62,8 +64,8 @@ def ip_traffic_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_ip_traffic_data(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -77,8 +79,8 @@ def ip_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_ip_count_data(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -92,8 +94,8 @@ def total_status_code_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_total_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -107,8 +109,8 @@ def ip_url_status_code_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_ip_url_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -122,8 +124,8 @@ def url_status_code_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_url_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
@@ -137,8 +139,8 @@ def ip_status_code_count_graphic():
     d = DataCore()
     d.generate_data()
     data = d.get_ip_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show'):
-        dd = DataDisplay(d)
+    if request.args.get('show') and data.any():
+        dd = DataDisplay()
         dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 

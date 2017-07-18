@@ -113,9 +113,9 @@ class DataCore(object):
         df.insert(6, 'x', dx[2])
         dd = pd.DataFrame(df)
 
-        dd.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method', 'y': 'url',
-                           'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize', 8: 'referer', 9: 'UserAgent'
-                           }, inplace=True)
+        dd.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method',
+                           'y': 'url', 'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize',
+                           8: 'referer', 9: 'UserAgent'}, inplace=True)
         self.data = dd
 
 

@@ -8,6 +8,8 @@ class DataAnalysisMethod(object):
 
     @staticmethod
     def url_traffic(datacore, *args, **kwargs):
+        if kwargs.get('limit'):
+            limit = kwargs.get('limit')
         return datacore.groupby('url').sum()['TrafficSize'].sort_values(*args, **kwargs)[0:10]
 
     @staticmethod

@@ -66,39 +66,18 @@ class DataDisplay(object):
 
     def _chose_graphic_kind(self, data, use_index, kind, xlabel, ylabel, color, x_str, y_str, title):
         self.ax0.set(title=title, xlabel=xlabel, ylabel=ylabel)
-        print(use_index)
-        print(type(use_index))
-        data.plot(kind=kind, color=color, ax=self.ax0, use_index=use_index)
+        data.plot(kind=kind, color=color, ax=self.ax0, use_index=use_index, fontsize=10, secondary_y=False)
 
     def show_url_traffic_graphic_barh(self):
         self._construct_figure_for_url_traffic_for_example(left=0.4)
         self._construct_axes_for_url_traffic_barh_example()
         plt.show()
 
-    def show_url_traffic_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
+    def show_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
                                  figsize=(12, 7), *args, **kwargs):
         self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
                       line_color='r', fig_color='b', *args, **kwargs)
 
-    def show_url_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
-                               figsize=(12, 7), *args, **kwargs):
-        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
-                      line_color='r', fig_color='b', *args, **kwargs)
-
-    def show_ip_traffic_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
-                                figsize=(12, 7), *args, **kwargs):
-        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
-                      line_color='r', fig_color='b', *args, **kwargs)
-
-    def show_ip_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
-                                figsize=(12, 7), *args, **kwargs):
-        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
-                      line_color='r', fig_color='b', *args, **kwargs)
-
-    def show_ip_url_traffic_count_graphic(self, data, use_index, kind='line', x_str='aaa', y_str='Traffic', title='QiNiu CDN',
-                              figsize=(12, 7), *args, **kwargs):
-        self._drawing(data, use_index, x_str, y_str, title, kind, figsize, xlabel='CDN Traffic', ylabel='url',
-                      line_color='r', fig_color='b', *args, **kwargs)
 
 
 if __name__ == '__main__':

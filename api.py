@@ -6,6 +6,7 @@ __author__ = 'bernie'
 from flask import Flask, jsonify, request
 from data import DataCore
 from data_display import DataDisplay
+import re
 from util import traffic_decimal
 
 
@@ -14,6 +15,9 @@ app = Flask(__name__)
 api_list = {
     '/show_url_traffic_data': u'''show all url's traffic''',
 }
+
+
+re_limit = re.compile(r"^\[[0-9]*:[0-9]*\]")
 
 
 @app.route('/')
@@ -33,7 +37,7 @@ def show_url_traffic_graphic():
     d.generate_data()
     data = d.get_url_traffic_data()
     dd = DataDisplay(d)
-    dd.show_url_traffic_graphic(data, kind, use_index)
+    dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
 
@@ -49,7 +53,7 @@ def show_url_count_graphic():
     d.generate_data()
     data = d.get_url_count_data()
     dd = DataDisplay(d)
-    dd.show_url_count_graphic(data, kind, use_index)
+    dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
 
@@ -67,7 +71,7 @@ def show_ip_traffic_graphic():
     d.generate_data()
     data = d.get_ip_traffic_data()
     dd = DataDisplay(d)
-    dd.show_ip_traffic_graphic(data, kind, use_index)
+    dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
 
@@ -85,7 +89,87 @@ def show_ip_count_graphic():
     d.generate_data()
     data = d.get_ip_count_data()
     dd = DataDisplay(d)
-    dd.show_ip_count_graphic(data, kind, use_index)
+    dd.show_graphic(data, kind, use_index)
+    return data.to_frame().to_json(orient='index')
+
+
+@app.route('/show_total_status_code_count_graphic', methods=['GET'])
+def show_total_status_code_count_graphic():
+    # graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
+    kind = request.args.get('kind', 'line')
+    # if kind not in graphic_kinds:
+    #     return "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+    use_index=request.args.get('use_index', True)
+    if use_index == ('False' or 'false'):
+        use_index = False
+
+    d = DataCore()
+    d.generate_data()
+    data = d.get_total_status_code_count()
+    dd = DataDisplay(d)
+    dd.show_graphic(data, kind, use_index)
+    return data.to_frame().to_json(orient='index')
+
+
+@app.route('/show_ip_url_status_code_count_graphic', methods=['GET'])
+def show_ip_url_status_code_count_graphic():
+    graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
+    kind = request.args.get('kind', 'line')
+    if kind not in graphic_kinds:
+        return "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+    use_index=request.args.get('use_index', True)
+    if use_index == ('False' or 'false'):
+        use_index = False
+
+    d = DataCore()
+    d.generate_data()
+    data = d.get_ip_url_status_code_count()
+    dd = DataDisplay(d)
+    dd.show_graphic(data, kind, use_index)
+    return data.to_frame().to_json(orient='index')
+
+
+@app.route('/show_url_status_code_count_graphic', methods=['GET'])
+def show_url_status_code_count_graphic():
+    graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
+    kind = request.args.get('kind', 'line')
+    if kind not in graphic_kinds:
+        return "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+    use_index=request.args.get('use_index', True)
+    if use_index == ('False' or 'false'):
+        use_index = False
+
+    d = DataCore()
+    d.generate_data()
+    data = d.get_url_status_code_count()
+    dd = DataDisplay(d)
+    dd.show_graphic(data, kind, use_index)
+    return data.to_frame().to_json(orient='index')
+
+
+@app.route('/show_ip_status_code_count_graphic', methods=['GET'])
+def show_ip_status_code_count_graphic():
+    graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
+    kind = request.args.get('kind', 'line')
+    limit = request.args.get('limit', '[:]')
+    if not re_limit.match(limit):
+        return "error limit argument"
+    if kind not in graphic_kinds:
+        return "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+    use_index = request.args.get('use_index', True)
+    print(limit)
+    limit = limit.replace('[', '')
+    limit = limit.replace(']', '')
+    limit = limit.split(':')
+    a1, a2 = limit[0], limit[1]
+    print(a1, a2)
+
+
+    d = DataCore()
+    d.generate_data()
+    data = d.get_ip_status_code_count()
+    dd = DataDisplay(d)
+    # dd.show_graphic(data, kind, use_index)
     return data.to_frame().to_json(orient='index')
 
 

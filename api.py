@@ -25,16 +25,19 @@ def index():
 
 @app.route('/total_data', methods=['GET'])
 def show_log_data():
-    d = DataCore()
-    d.generate_data()
-    total_data = (data_after_argument(d.data, limit=parse_limit(request.args.get('limit', ':'))).to_json(orient='index'))
-    print(total_data)
-    return total_data
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    if error:
+        return error
+
+    status_code = request.args.get('status_code', '')
+    url = request.args.get('url', '')
+    data, orient = get_data('get_data_by_factor', limit, status_code=status_code, url=url, ip=ip, referer=referer)
+    return data.to_json(orient=orient)
 
 
 @app.route('/url_traffic_graphic', methods=['GET'])
 def show_url_traffic_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
@@ -45,7 +48,7 @@ def show_url_traffic_graphic():
 
 @app.route('/url_count_graphic', methods=['GET'])
 def url_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -57,7 +60,7 @@ def url_count_graphic():
 
 @app.route('/ip_traffic_graphic', methods=['GET'])
 def ip_traffic_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -69,7 +72,7 @@ def ip_traffic_graphic():
 
 @app.route('/ip_count_graphic', methods=['GET'])
 def ip_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -81,7 +84,7 @@ def ip_count_graphic():
 
 @app.route('/total_status_code_count_graphic', methods=['GET'])
 def total_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -93,7 +96,7 @@ def total_status_code_count_graphic():
 
 @app.route('/ip_url_status_code_count_graphic', methods=['GET'])
 def ip_url_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -105,7 +108,7 @@ def ip_url_status_code_count_graphic():
 
 @app.route('/url_status_code_count_graphic', methods=['GET'])
 def url_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -116,7 +119,7 @@ def url_status_code_count_graphic():
 
 @app.route('/ip_status_code_count_graphic', methods=['GET'])
 def ip_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
     if error:
         return error
 
@@ -128,7 +131,7 @@ def ip_status_code_count_graphic():
 
 @app.route('/time_traffic_count', methods=['GET'])
 def time_traffic_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer =parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
@@ -139,17 +142,25 @@ def time_traffic_count_graphic():
 
 def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
                       xlabel, ylabel, line_color, fig_color, funciton,
-                      x_str, y_str, title, figsize):
-    d = DataCore()
-    d.generate_data()
-    data = eval('d.{}(limit=parse_limit({}))'.format(data_kind, 'limit'))
-    orient = 'table' if data_kind == 'get_time_traffic_count' else 'index'
+                      x_str, y_str, title, figsize
+                      ):
+    data, orient = get_data(data_kind, limit)
+
     if is_show and data.any():
         dd = DataDisplay()
         dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,
                         line_color=line_color, fig_color=fig_color, funciton=funciton,
                         x_str=x_str, y_str=y_str, title=title, figsize=figsize, dis_tick=dis_tick)
     return data.to_json(orient=orient)
+
+
+def get_data(data_kind, limit, *args, **kwargs):
+    d = DataCore()
+    d.generate_data()
+    data = eval('d.{}(limit=parse_limit({}), *args, **kwargs)'.format(data_kind, 'limit'))
+    orient = 'table' if data_kind == 'get_time_traffic_count' else 'index'
+    return data, orient
+
 
 
 if __name__ == '__main__':

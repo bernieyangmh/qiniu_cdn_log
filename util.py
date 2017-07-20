@@ -8,7 +8,7 @@ __author__ = 'berniey'
 
 
 re_limit = re.compile(r"^[0-9]*:[0-9]*")
-
+re_ip = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 
 def singleton(cls, *args, **kw):
     '''
@@ -93,7 +93,11 @@ def parse_requests(request):
             dis_tick = 'y'
         else:
             dis_tick = 'x'
-    return error, kind, limit, use_index, show, dis_tick
+    ip = request.args.get('ip', '')
+    if ip and not re_ip.match(ip):
+        error = "Please fill a Correct ip"
+    referer = request.args.get('referer', '')
+    return error, kind, limit, use_index, show, dis_tick, ip, referer
 
 
 def convert_time_format(request_time):

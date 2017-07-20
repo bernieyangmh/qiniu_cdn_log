@@ -60,6 +60,9 @@ class DataCore(object):
     def get_time_traffic_count(self, *args, **kwargs):
         return self._set_time_traffic_count(*args, **kwargs)
 
+    def get_data_by_factor(self, *args, **kwargs):
+        return self._set_data_by_factor(*args, **kwargs)
+
     def _set_url_traffic_data(self, *args, **kwargs):
         return DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
 
@@ -86,6 +89,9 @@ class DataCore(object):
 
     def _set_time_traffic_count(self, *args, **kwargs):
         return DataAnalysisMethod.time_traffic_count(self.data, *args, **kwargs)
+
+    def _set_data_by_factor(self, *args, **kwargs):
+        return DataAnalysisMethod.data_by_factor(self.data, *args, **kwargs)
 
 
     def _get_files(self):

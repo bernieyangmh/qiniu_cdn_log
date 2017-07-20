@@ -7,6 +7,7 @@ from util import data_after_argument
 
 class DataAnalysisMethod(object):
 
+
     @staticmethod
     def url_traffic(datacore, *args, **kwargs):
         aim_data = datacore.groupby('url').sum()['TrafficSize'].sort_values(ascending=False)
@@ -52,6 +53,24 @@ class DataAnalysisMethod(object):
         aim_data = datacore.groupby('request_time')['TrafficSize'].sum()
         return data_after_argument(aim_data, *args, **kwargs)
 
+
+    @staticmethod
+    def data_by_factor(datacore, *args, **kwargs):
+        aim_data = datacore
+        print(kwargs)
+        if kwargs.get('status_code'):
+            if str(kwargs['status_code'])[1:] == 'xx':
+                aim_data = aim_data[(int(kwargs.get('status_code')[0])*100 <= aim_data.StatusCode)
+                                    & (aim_data.StatusCode < (int(kwargs.get('status_code')[0])+1)*100)]
+            else:
+                aim_data = aim_data[aim_data.StatusCode == int(kwargs['status_code'])]
+        if kwargs.get('url'):
+            aim_data = aim_data[aim_data.url == kwargs.get('url')]
+        if kwargs.get('ip'):
+            aim_data = aim_data[aim_data.ip == kwargs.get('ip')]
+        if kwargs.get('referer'):
+            aim_data = aim_data[aim_data.referer == kwargs.get('referer')]
+        return data_after_argument(aim_data, *args, **kwargs)
 
 
 

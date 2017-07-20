@@ -97,7 +97,11 @@ def parse_requests(request):
     if ip and not re_ip.match(ip):
         error = "Please fill a Correct ip"
     referer = request.args.get('referer', '')
-    return error, kind, limit, use_index, show, dis_tick, ip, referer
+
+    start_time = request.args.get('start_time')
+    end_time = request.args.get('end_time')
+
+    return error, kind, limit, use_index, show, dis_tick, ip, referer, start_time, end_time
 
 
 def convert_time_format(request_time):
@@ -105,6 +109,7 @@ def convert_time_format(request_time):
     timestamp = time.mktime(struct_time) + 28800
     time_array = time.localtime(timestamp)
     time_date = time.strftime("%Y-%m-%d %H:%M:%S", time_array)
-    return time_date, timestamp
+    # return time_date, timestamp
+    return time_date
 
 

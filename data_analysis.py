@@ -57,7 +57,6 @@ class DataAnalysisMethod(object):
     @staticmethod
     def data_by_factor(datacore, *args, **kwargs):
         aim_data = datacore
-        print(kwargs)
         if kwargs.get('status_code'):
             if str(kwargs['status_code'])[1:] == 'xx':
                 aim_data = aim_data[(int(kwargs.get('status_code')[0])*100 <= aim_data.StatusCode)
@@ -70,6 +69,12 @@ class DataAnalysisMethod(object):
             aim_data = aim_data[aim_data.ip == kwargs.get('ip')]
         if kwargs.get('referer'):
             aim_data = aim_data[aim_data.referer == kwargs.get('referer')]
+
+        if kwargs.get('start_time'):
+            aim_data = aim_data[kwargs.get('start_time') < aim_data.request_time.values]
+
+        if kwargs.get('end_time'):
+            aim_data = aim_data[aim_data.request_time.values < kwargs.get('end_time')]
         return data_after_argument(aim_data, *args, **kwargs)
 
 

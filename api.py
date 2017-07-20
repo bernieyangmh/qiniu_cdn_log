@@ -25,13 +25,15 @@ def index():
 
 @app.route('/total_data', methods=['GET'])
 def show_log_data():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     status_code = request.args.get('status_code', '')
     url = request.args.get('url', '')
-    data, orient = get_data('get_data_by_factor', limit, status_code=status_code, url=url, ip=ip, referer=referer)
+    data, orient = get_data('get_data_by_factor', limit, status_code=status_code,
+                            url=url, ip=ip, referer=referer, start_time=start_time,
+                            end_time=end_time)
     return data.to_json(orient=orient)
 
 

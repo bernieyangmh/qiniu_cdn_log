@@ -9,7 +9,7 @@ import pandas as pd
 import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
-from util import SingletonMetaclass,singleton
+from util import SingletonMetaclass, singleton, convert_time_format
 from data_analysis import DataAnalysisMethod
 from util import traffic_decimal
 
@@ -57,6 +57,9 @@ class DataCore(object):
     def get_ip_status_code_count(self, *args, **kwargs):
         return self._set_ip_status_code_count(*args, **kwargs)
 
+    def get_time_traffic_count(self, *args, **kwargs):
+        return self._set_time_traffic_count(*args, **kwargs)
+
     def _set_url_traffic_data(self, *args, **kwargs):
         return DataAnalysisMethod.url_traffic(self.data, *args, **kwargs)
 
@@ -80,6 +83,10 @@ class DataCore(object):
 
     def _set_ip_status_code_count(self, *args, **kwargs):
         return DataAnalysisMethod.ip_status_code_count(self.data, *args, **kwargs)
+
+    def _set_time_traffic_count(self, *args, **kwargs):
+        return DataAnalysisMethod.time_traffic_count(self.data, *args, **kwargs)
+
 
     def _get_files(self):
         return GetConfig().get_log()
@@ -116,6 +123,9 @@ class DataCore(object):
         dd.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method',
                            'y': 'url', 'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize',
                            8: 'referer', 9: 'UserAgent'}, inplace=True)
+
+        ddd = dd['request_time'].apply(convert_time_format)
+        dd['request_time'] = ddd
         self.data = dd
 
 

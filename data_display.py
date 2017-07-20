@@ -18,7 +18,7 @@ class DataDisplay(object):
         pass
 
     def _drawing(self, data, kind, use_index, xlabel, ylabel, line_color,
-                      fig_color, funciton, x_str, y_str, title, figsize):
+                      fig_color, funciton, x_str, y_str, title, figsize, dis_tick):
         self._construct_figure(figsize=figsize)
         self._construct_guideline_avg(data, color=line_color)
         self._construct_axe(data, funciton)
@@ -26,7 +26,14 @@ class DataDisplay(object):
                                  ylabel=ylabel, color=fig_color,
                                  x_str=x_str, y_str=y_str, title=title
                                  )
+        self._ticks(dis_tick)
+
         plt.show()
+
+    def _ticks(self, dis_tick):
+        #刻度相关的操作
+        if dis_tick:
+            eval('plt.{}ticks([])'.format(dis_tick))
 
     def _construct_figure(self, figsize):
         self.fig, self.ax0 = plt.subplots(figsize=figsize)
@@ -42,7 +49,9 @@ class DataDisplay(object):
 
     def _construct_axe(self, data, funciton):
         # 坐标轴的长度
-        self.ax0.set_xlim([0, 10 ** len(str(data.max()))])
+        self.ax0.set_xlim([0, int(1.2 * (data.max()))])
+        print(int(1.2 * (data.max())))
+        # self.ax0.set_xlim([0, 2 ** len(str(data.max()))])
         # 设置title和label
 
         # 函数，改变x轴的单位
@@ -52,14 +61,13 @@ class DataDisplay(object):
 
     def _chose_graphic_kind(self, data, kind, use_index, xlabel, ylabel, color, x_str, y_str, title):
         self.ax0.set(title=title, xlabel=xlabel, ylabel=ylabel)
-        print(data)
         data.plot(kind=kind, color=color, ax=self.ax0, use_index=use_index, fontsize=10, secondary_y=False)
 
     def show_graphic(self, data, kind, use_index, xlabel, ylabel, line_color,
-                     fig_color, funciton, x_str, y_str, title, figsize):
+                     fig_color, funciton, x_str, y_str, title, figsize, dis_tick):
 
         self._drawing(data, kind, use_index, xlabel, ylabel, line_color,
-                      fig_color, funciton, x_str, y_str, title, figsize)
+                      fig_color, funciton, x_str, y_str, title, figsize, dis_tick)
 
 
 if __name__ == '__main__':

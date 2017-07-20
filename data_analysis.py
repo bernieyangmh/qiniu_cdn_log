@@ -47,7 +47,10 @@ class DataAnalysisMethod(object):
         aim_data = datacore.groupby('ip')['StatusCode'].value_counts()
         return data_after_argument(aim_data, *args, **kwargs)
 
-
+    @staticmethod
+    def time_traffic_count(datacore, *args, **kwargs):
+        aim_data = datacore.groupby('request_time')['TrafficSize'].sum()
+        return data_after_argument(aim_data, *args, **kwargs)
 
 
 

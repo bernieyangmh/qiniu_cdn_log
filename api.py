@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request
 from data import DataCore
 from data_display import DataDisplay
 import re
-from util import traffic_decimal, parse_limit, parse_requests
+from util import traffic_decimal, parse_limit, parse_requests, data_after_argument
 
 
 app = Flask(__name__)
@@ -23,126 +23,133 @@ def index():
     return jsonify(api_list)
 
 
-@app.route('/url_traffic_graphic', methods=['GET'])
-def show_url_traffic_graphic():
-    error, kind, limit, use_index = parse_requests(request)
-    if error:
-        return error
+@app.route('/total_data', methods=['GET'])
+def show_log_data():
     d = DataCore()
     d.generate_data()
-    data = d.get_url_traffic_data(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index, xlabel='xlabel', ylabel='ylabel',
-                        line_color='r', fig_color='b', funciton=traffic_decimal,
-                        x_str='xxxxx', y_str='yyyy', title='QiNiu CDN', figsize=(12, 7)
-                        )
-    return data.to_frame().to_json(orient='index')
+    total_data = (data_after_argument(d.data, limit=parse_limit(request.args.get('limit', ':'))).to_json(orient='index'))
+    print(total_data)
+    return total_data
+
+
+@app.route('/url_traffic_graphic', methods=['GET'])
+def show_url_traffic_graphic():
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    if error:
+        return error
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_url_traffic_data', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/url_count_graphic', methods=['GET'])
 def url_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_url_count_data(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_url_count_data', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/ip_traffic_graphic', methods=['GET'])
 def ip_traffic_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_ip_traffic_data(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_ip_traffic_data', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/ip_count_graphic', methods=['GET'])
 def ip_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_ip_count_data(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_ip_count_data', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/total_status_code_count_graphic', methods=['GET'])
 def total_status_code_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_total_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_total_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/ip_url_status_code_count_graphic', methods=['GET'])
 def ip_url_status_code_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_ip_url_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_ip_url_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 
 @app.route('/url_status_code_count_graphic', methods=['GET'])
 def url_status_code_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
-    d = DataCore()
-    d.generate_data()
-    data = d.get_url_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
-        dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
-
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_url_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
 
 @app.route('/ip_status_code_count_graphic', methods=['GET'])
 def ip_status_code_count_graphic():
-    error, kind, limit, use_index = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
     if error:
         return error
 
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_ip_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+
+
+@app.route('/time_traffic_count', methods=['GET'])
+def time_traffic_count_graphic():
+    error, kind, limit, use_index, is_show, dis_tick = parse_requests(request)
+    if error:
+        return error
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_time_traffic_count', xlabel='xlabel', ylabel='ylabel',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+
+
+def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
+                      xlabel, ylabel, line_color, fig_color, funciton,
+                      x_str, y_str, title, figsize):
     d = DataCore()
     d.generate_data()
-    data = d.get_ip_status_code_count(limit=parse_limit(limit))
-    if request.args.get('show') and data.any():
+    data = eval('d.{}(limit=parse_limit({}))'.format(data_kind, 'limit'))
+    orient = 'table' if data_kind == 'get_time_traffic_count' else 'index'
+    if is_show and data.any():
         dd = DataDisplay()
-        dd.show_graphic(data, kind, use_index)
-    return data.to_frame().to_json(orient='index')
+        dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,
+                        line_color=line_color, fig_color=fig_color, funciton=funciton,
+                        x_str=x_str, y_str=y_str, title=title, figsize=figsize, dis_tick=dis_tick)
+    return data.to_json(orient=orient)
 
 
 if __name__ == '__main__':

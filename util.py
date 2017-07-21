@@ -3,12 +3,33 @@
 
 import re
 import time
+from sqlalchemy import create_engine
+import pandas as pd
 
 __author__ = 'berniey'
 
 
 re_limit = re.compile(r"^[0-9]*:[0-9]*")
 re_ip = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
+
+
+engine_mysql = create_engine("mysql+pymysql://work:123@localhost:3306/cdn")
+
+engine_pg = create_engine("postgresql://work:123@localhost:5432/cdn")
+
+series_to_frame_by_kind = {
+                           'get_ip_traffic_data': (['ip'], 'traffic'),
+                           'get_ip_count_data': (['ip'], 'count'),
+                           'get_url_traffic_data': (['url'], 'traffic'),
+                           'get_url_count_data': (['url'], 'count'),
+                           'get_total_status_code_count': (['code'], 'traffic'),
+                           'get_url_status_code_count': (['url', 'code'], 'count'),
+                           'get_ip_status_code_count': (['ip', 'code'], 'count'),
+                           'get_ip_url_status_code_count': (['ip', 'code'], 'count'),
+                           'get_time_traffic_count': (['time'], 'traffic'),
+                           }
+
+
 
 def singleton(cls, *args, **kw):
     '''
@@ -28,8 +49,7 @@ class SingletonMetaclass(type):
     """
     Singleton Metaclass
 
-    @singleton
-    class someclass(object):
+    __metaclass__ = SingletonMetaclass
 
     """
 
@@ -111,5 +131,32 @@ def convert_time_format(request_time):
     time_date = time.strftime("%Y-%m-%d %H:%M:%S", time_array)
     # return time_date, timestamp
     return time_date
+
+
+def save_data(data, data_kind, save_kind, path_or_table='.'):
+    if save_kind == ('mysql' or 'pg' or 'postgres'):
+        return save_database()
+    if save_kind == 'txt':
+        pass
+    if save_kind == 'csv':
+        pass
+    if save_kind == 'md':
+        pass
+
+
+
+def save_database(data, data_kind, save_kind, table_name):
+    # 确定index转换为clomuns的名称
+    columns_value = series_to_frame_by_kind.get(data_kind)
+    #选择数据库引擎
+    engine = engine_mysql if save_kind == 'mysql' else engine_pg
+
+    _save_database_act(data, engine, table_name, columns_value[0], columns_value[1])
+
+
+def _save_database_act(data, engine, table_name, columns, values_name):
+    df = pd.DataFrame([i for i in data.index], columns=columns)
+    df[values_name] = data.values
+    df.to_sql(table_name, engine, if_exists='replace')
 
 

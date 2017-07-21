@@ -13,6 +13,7 @@ from util import SingletonMetaclass, singleton, convert_time_format
 from data_analysis import DataAnalysisMethod
 from util import traffic_decimal
 
+
 @singleton
 class DataCore(object):
 

@@ -12,6 +12,7 @@ from util import traffic_decimal
 from data import DataCore
 
 
+@singleton
 class DataDisplay(object):
 
     def __init__(self):

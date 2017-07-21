@@ -7,7 +7,7 @@ from flask import Flask, jsonify, request
 from data import DataCore
 from data_display import DataDisplay
 import re
-from util import traffic_decimal, parse_limit, parse_requests, data_after_argument
+from util import traffic_decimal, parse_limit, parse_requests, data_after_argument, save_data
 
 
 app = Flask(__name__)
@@ -34,12 +34,14 @@ def show_log_data():
     data, orient = get_data('get_data_by_factor', limit, status_code=status_code,
                             url=url, ip=ip, referer=referer, start_time=start_time,
                             end_time=end_time)
+    if request.args.get('save'):
+        save_data(data)
     return data.to_json(orient=orient)
 
 
 @app.route('/url_traffic_graphic', methods=['GET'])
 def show_url_traffic_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
@@ -50,7 +52,7 @@ def show_url_traffic_graphic():
 
 @app.route('/url_count_graphic', methods=['GET'])
 def url_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -62,7 +64,7 @@ def url_count_graphic():
 
 @app.route('/ip_traffic_graphic', methods=['GET'])
 def ip_traffic_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -74,7 +76,7 @@ def ip_traffic_graphic():
 
 @app.route('/ip_count_graphic', methods=['GET'])
 def ip_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -86,7 +88,7 @@ def ip_count_graphic():
 
 @app.route('/total_status_code_count_graphic', methods=['GET'])
 def total_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -98,7 +100,7 @@ def total_status_code_count_graphic():
 
 @app.route('/ip_url_status_code_count_graphic', methods=['GET'])
 def ip_url_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -110,7 +112,7 @@ def ip_url_status_code_count_graphic():
 
 @app.route('/url_status_code_count_graphic', methods=['GET'])
 def url_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
@@ -121,7 +123,7 @@ def url_status_code_count_graphic():
 
 @app.route('/ip_status_code_count_graphic', methods=['GET'])
 def ip_status_code_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 

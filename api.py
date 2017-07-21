@@ -35,7 +35,7 @@ def show_log_data():
                             url=url, ip=ip, referer=referer, start_time=start_time,
                             end_time=end_time)
     if request.args.get('save'):
-        save_data(data)
+        save_data(data, 'get_data_by_factor', request.args.get('save'), request.args.get('pt'))
     return data.to_json(orient=orient)
 
 

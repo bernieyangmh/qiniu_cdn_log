@@ -8,7 +8,7 @@ import pandas as pd
 import json
 import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
-from util import traffic_decimal
+from util import traffic_decimal, singleton
 from data import DataCore
 
 

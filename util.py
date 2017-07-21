@@ -5,6 +5,7 @@ import re
 import time
 from sqlalchemy import create_engine
 import pandas as pd
+import os
 
 __author__ = 'berniey'
 
@@ -135,28 +136,41 @@ def convert_time_format(request_time):
 
 def save_data(data, data_kind, save_kind, path_or_table='.'):
     if save_kind == ('mysql' or 'pg' or 'postgres'):
-        return save_database()
-    if save_kind == 'txt':
-        pass
+        _save_database(data, data_kind, save_kind, path_or_table)
+    if save_kind == 'excel':
+        _save_file(data, data_kind, path_or_table, file_kinds='excel')
     if save_kind == 'csv':
-        pass
-    if save_kind == 'md':
-        pass
+        _save_file(data, data_kind, path_or_table, file_kinds='csv')
 
 
-
-def save_database(data, data_kind, save_kind, table_name):
-    # 确定index转换为clomuns的名称
+def _save_file(data, data_kind, path, file_kinds):
     columns_value = series_to_frame_by_kind.get(data_kind)
+    df = _series_to_dataframe(data, columns_value)
+    path = _path_and_mkdir(path)
+    if file_kinds == 'excel':
+        df.to_excel(path)
+    if file_kinds == 'csv':
+        df.to_csv(path)
+
+
+def _save_database(data, data_kind, save_kind, table_name):
+    print(data_kind)
+    columns_value = series_to_frame_by_kind.get(data_kind)
+    print(columns_value)
     #选择数据库引擎
     engine = engine_mysql if save_kind == 'mysql' else engine_pg
-
-    _save_database_act(data, engine, table_name, columns_value[0], columns_value[1])
-
-
-def _save_database_act(data, engine, table_name, columns, values_name):
-    df = pd.DataFrame([i for i in data.index], columns=columns)
-    df[values_name] = data.values
-    df.to_sql(table_name, engine, if_exists='replace')
+    if data_kind in []:
+        data = _series_to_dataframe(data, columns_value)
+    data.to_sql(table_name, engine, if_exists='replace')
 
 
+def _series_to_dataframe(data, columns_value):
+    df = pd.DataFrame([i for i in data.index], columns=columns_value[0])
+    df[columns_value[1]] = data.values
+    return df
+
+
+def _path_and_mkdir(path):
+    if not os.path.exists(path):
+        os.makedirs(path)
+    return path

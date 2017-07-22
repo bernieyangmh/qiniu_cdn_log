@@ -153,7 +153,7 @@ def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
                       x_str, y_str, title, figsize
                       ):
     data, orient = get_data(data_kind, limit)
-    if is_show and data.any():
+    if is_show and not data.empty:
         dd = DataDisplay()
         dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,
                         line_color=line_color, fig_color=fig_color, funciton=funciton,

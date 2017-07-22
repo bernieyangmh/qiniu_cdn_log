@@ -21,8 +21,9 @@ class DataDisplay(object):
     def _drawing(self, data, kind, use_index, xlabel, ylabel, line_color,
                       fig_color, funciton, x_str, y_str, title, figsize, dis_tick):
         self._construct_figure(figsize=figsize)
-        self._construct_guideline_avg(data, color=line_color)
-        self._construct_axe(data, funciton)
+        if kind in ['bar', 'barh']:
+            self._construct_guideline_avg(data, color=line_color)
+        self._construct_axe(data, funciton, kind)
         self._chose_graphic_kind(data, kind=kind, use_index=use_index, xlabel=xlabel,
                                  ylabel=ylabel, color=fig_color,
                                  x_str=x_str, y_str=y_str, title=title
@@ -48,7 +49,7 @@ class DataDisplay(object):
                          linewidth=1
                          )
 
-    def _construct_axe(self, data, funciton):
+    def _construct_axe(self, data, funciton, kind):
         # 坐标轴的长度
         self.ax0.set_xlim([0, int(1.2 * (data.max()))])
         # self.ax0.set_xlim([0, 2 ** len(str(data.max()))])
@@ -57,7 +58,10 @@ class DataDisplay(object):
         # 函数，改变x轴的单位
         if funciton:
             formatter = FuncFormatter(funciton)
-            self.ax0.xaxis.set_major_formatter(formatter)
+            if kind == 'barh':
+                self.ax0.xaxis.set_major_formatter(formatter)
+            else:
+                self.ax0.yaxis.set_major_formatter(formatter)
 
     def _chose_graphic_kind(self, data, kind, use_index, xlabel, ylabel, color, x_str, y_str, title):
         self.ax0.set(title=title, xlabel=xlabel, ylabel=ylabel)

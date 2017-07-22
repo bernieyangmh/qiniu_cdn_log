@@ -64,14 +64,14 @@ class SingletonMetaclass(type):
 
 def traffic_decimal(x, pos):
     if x <= 1000000:
-        return '{:1.0f}'.format(x)
+        return '{:1.0f}'.format(x*1e-3)
     if 1000000 < x <= 1000000000:
         return '{:1.1f}M'.format(x*1e-6)
     elif 1000000000 <= x < 1000000000000:
         return '{:1.2f}G'.format(x*1e-9)
     elif x <= 1000000000000:
         return '{:1.3f}P'.format(x * 1e-12)
-    return '{:1.0f}WTF'.format(x*1e-3)
+    return '{:1.0f}WTF'.format(x)
 
 
 def data_after_argument(aim_data, *args, **kwargs):
@@ -107,7 +107,7 @@ def parse_requests(request):
     use_index = request.args.get('use_index', True)
     if use_index in ['False', 'false', 'FALSE']:
         use_index = False
-    show = request.args.get('show', None)
+    is_show = request.args.get('is_show', None)
     dis_tick = request.args.get('dis_tick', '')
     if dis_tick:
         if kind == 'barh':
@@ -122,7 +122,7 @@ def parse_requests(request):
     start_time = request.args.get('start_time')
     end_time = request.args.get('end_time')
 
-    return error, kind, limit, use_index, show, dis_tick, ip, referer, start_time, end_time
+    return error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time
 
 
 def convert_time_format(request_time):

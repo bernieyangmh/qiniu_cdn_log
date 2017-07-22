@@ -135,7 +135,7 @@ def convert_time_format(request_time):
 
 
 def save_data(data, data_kind, save_kind, path_or_table):
-    if save_kind == ('mysql' or 'pg' or 'postgres'):
+    if save_kind in ['mysql', 'pg', 'postgres']:
         if not path_or_table:
             path_or_table = data_kind+'_'+str(time.time())
         _save_database(data, data_kind, save_kind, path_or_table)
@@ -161,8 +161,7 @@ def _save_file(data, data_kind, path, file_kinds):
             data.to_excel(out, data_kind)
             out.save()
     if file_kinds == 'csv':
-        pass
-        # df.to_csv(path)
+        data.to_csv(path)
 
 
 def _save_database(data, data_kind, save_kind, table_name):

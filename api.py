@@ -26,7 +26,7 @@ def index():
     return jsonify(api_list)
 
 
-@app.route('/total_data', methods=['GET'])
+@app.route('/get_total_data', methods=['GET'])
 def show_log_data():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
@@ -42,109 +42,110 @@ def show_log_data():
     return data.to_json(orient=orient)
 
 
-@app.route('/url_traffic_graphic', methods=['GET'])
-def show_url_traffic_graphic():
+@app.route('/get_url_traffic', methods=['GET'])
+def show_url_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_traffic_data', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_url_traffic_data', xlabel='URL', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL&Traffic', figsize=(12, 7))
 
 
-@app.route('/url_count_graphic', methods=['GET'])
-def url_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
-    if error:
-        return error
-
-    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_count_data', xlabel='xlabel', ylabel='ylabel',
-                             line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
-
-
-@app.route('/ip_traffic_graphic', methods=['GET'])
-def ip_traffic_graphic():
+@app.route('/get_url_count', methods=['GET'])
+def show_url_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_traffic_data', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_url_count_data', xlabel='URL', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL&Count', figsize=(12, 7))
 
 
-@app.route('/ip_count_graphic', methods=['GET'])
-def ip_count_graphic():
+@app.route('/get_ip_traffic', methods=['GET'])
+def show_ip_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_count_data', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_ip_traffic_data', xlabel='IP', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='IP&Traffic', figsize=(12, 7))
 
 
-@app.route('/total_status_code_count_graphic', methods=['GET'])
-def total_status_code_count_graphic():
+@app.route('/get_ip_count', methods=['GET'])
+def show_ip_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_total_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_ip_count_data', xlabel='IP', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='x', title='IP&Count', figsize=(12, 7))
 
 
-@app.route('/ip_url_status_code_count_graphic', methods=['GET'])
-def ip_url_status_code_count_graphic():
+@app.route('/get_total_status_code_count', methods=['GET'])
+def show_total_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_url_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_total_status_code_count', xlabel='Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Code&Count', figsize=(12, 7))
 
 
-@app.route('/url_status_code_count_graphic', methods=['GET'])
-def url_status_code_count_graphic():
+@app.route('/get_ip_url_status_code_count', methods=['GET'])
+def show_ip_url_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_ip_url_status_code_count', xlabel='Ip_Url_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7))
 
-@app.route('/ip_status_code_count_graphic', methods=['GET'])
-def ip_status_code_count_graphic():
+
+@app.route('/get_url_status_code_count', methods=['GET'])
+def show_url_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_status_code_count', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_url_status_code_count', xlabel='URL_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7))
 
 
-@app.route('/time_traffic_count', methods=['GET'])
-def time_traffic_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time  =parse_requests(request)
+@app.route('/get_ip_status_code_count', methods=['GET'])
+def show_ip_status_code_count():
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    if error:
+        return error
+
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_ip_status_code_count', xlabel='IP&Code', ylabel='Count',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7))
+
+
+@app.route('/get_time_traffic_count', methods=['GET'])
+def show_time_traffic_count():
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_time_traffic_count', xlabel='xlabel', ylabel='ylabel',
+                             data_kind='get_time_traffic_count', xlabel='Time&Traffic', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='xxxxx', y_str='yyyy', title='C D N', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Time&Traffic_Count', figsize=(12, 7))
 
 
 def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
@@ -170,9 +171,5 @@ def get_data(data_kind, limit, *args, **kwargs):
     return data, orient
 
 
-
 if __name__ == '__main__':
     app.run()
-
-import time
-time.time()

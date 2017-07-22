@@ -17,6 +17,9 @@ api_list = {
     '/show_url_traffic_data': u'''show all url's traffic''',
 }
 
+# 列表中的数据json格式用table
+orient_format = ['get_time_traffic_count', 'get_url_status_code_count', 'get_ip_status_code_count']
+
 
 @app.route('/')
 def index():
@@ -135,7 +138,7 @@ def ip_status_code_count_graphic():
 
 @app.route('/time_traffic_count', methods=['GET'])
 def time_traffic_count_graphic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer =parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time  =parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
@@ -149,12 +152,13 @@ def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
                       x_str, y_str, title, figsize
                       ):
     data, orient = get_data(data_kind, limit)
-
     if is_show and data.any():
         dd = DataDisplay()
         dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,
                         line_color=line_color, fig_color=fig_color, funciton=funciton,
                         x_str=x_str, y_str=y_str, title=title, figsize=figsize, dis_tick=dis_tick)
+    if request.args.get('save'):
+        save_data(data, data_kind, request.args.get('save'), request.args.get('pt'))
     return data.to_json(orient=orient)
 
 
@@ -162,7 +166,7 @@ def get_data(data_kind, limit, *args, **kwargs):
     d = DataCore()
     d.generate_data()
     data = eval('d.{}(limit=parse_limit({}), *args, **kwargs)'.format(data_kind, 'limit'))
-    orient = 'table' if data_kind == 'get_time_traffic_count' else 'index'
+    orient = 'table' if data_kind in orient_format else 'index'
     return data, orient
 
 
@@ -170,3 +174,5 @@ def get_data(data_kind, limit, *args, **kwargs):
 if __name__ == '__main__':
     app.run()
 
+import time
+time.time()

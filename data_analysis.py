@@ -15,42 +15,43 @@ class DataAnalysisMethod(object):
 
     @staticmethod
     def url_count(datacore, *args, **kwargs):
-        aim_data = datacore['url'].value_counts().rename('count')
+        aim_data = datacore['url'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def ip_traffic(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('ip').sum()['TrafficSize'].sort_values()
+        aim_data = datacore.groupby('ip').sum()['TrafficSize'].sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def ip_count(datacore, *args, **kwargs):
-        aim_data = datacore['ip'].value_counts()
+        aim_data = datacore['ip'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def total_status_code_count(datacore, *args, **kwargs):
-        aim_data = datacore['StatusCode'].value_counts()
+        aim_data = datacore['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def ip_url_status_code_count(datacore, *args, **kwargs):
-        aim_data = datacore.groupby(['ip', 'url'])['StatusCode'].value_counts()
+        aim_data = datacore.groupby(['ip', 'url'])['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def url_status_code_count(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('url')['StatusCode'].value_counts()
+        aim_data = datacore.groupby('url')['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
+        print(aim_data)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def ip_status_code_count(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('ip')['StatusCode'].value_counts()
+        aim_data = datacore.groupby('ip')['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def time_traffic_count(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('request_time')['TrafficSize'].sum()
+        aim_data = datacore.groupby('request_time')['TrafficSize'].sum().sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
 

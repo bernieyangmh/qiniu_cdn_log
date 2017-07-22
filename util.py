@@ -23,10 +23,10 @@ series_to_frame_by_kind = {
                            'get_ip_count_data': (['ip'], 'count'),
                            'get_url_traffic_data': (['url'], 'traffic'),
                            'get_url_count_data': (['url'], 'count'),
-                           'get_total_status_code_count': (['code'], 'traffic'),
+                           'get_total_status_code_count': (['code'], 'count'),
                            'get_url_status_code_count': (['url', 'code'], 'count'),
                            'get_ip_status_code_count': (['ip', 'code'], 'count'),
-                           'get_ip_url_status_code_count': (['ip', 'code'], 'count'),
+                           'get_ip_url_status_code_count': (['ip', 'url', 'code'], 'count'),
                            'get_time_traffic_count': (['time'], 'traffic'),
                            }
 
@@ -134,8 +134,10 @@ def convert_time_format(request_time):
     return time_date
 
 
-def save_data(data, data_kind, save_kind, path_or_table='.'):
+def save_data(data, data_kind, save_kind, path_or_table):
     if save_kind == ('mysql' or 'pg' or 'postgres'):
+        if not path_or_table:
+            path_or_table = data_kind+'_'+str(time.time())
         _save_database(data, data_kind, save_kind, path_or_table)
     if save_kind == 'excel':
         _save_file(data, data_kind, path_or_table, file_kinds='excel')
@@ -145,21 +147,29 @@ def save_data(data, data_kind, save_kind, path_or_table='.'):
 
 def _save_file(data, data_kind, path, file_kinds):
     columns_value = series_to_frame_by_kind.get(data_kind)
-    df = _series_to_dataframe(data, columns_value)
+    if columns_value:
+        data = _series_to_dataframe(data, columns_value)
     path = _path_and_mkdir(path)
     if file_kinds == 'excel':
-        df.to_excel(path)
+        from openpyxl import load_workbook
+        if os.path.isfile(path):
+            with pd.ExcelWriter(path, engine='openpyxl') as writer:
+                writer.book = load_workbook(path)
+                data.to_excel(writer, data_kind)
+        else:
+            out = pd.ExcelWriter(path)
+            data.to_excel(out, data_kind)
+            out.save()
     if file_kinds == 'csv':
-        df.to_csv(path)
+        pass
+        # df.to_csv(path)
 
 
 def _save_database(data, data_kind, save_kind, table_name):
-    print(data_kind)
     columns_value = series_to_frame_by_kind.get(data_kind)
-    print(columns_value)
     #选择数据库引擎
     engine = engine_mysql if save_kind == 'mysql' else engine_pg
-    if data_kind in []:
+    if columns_value:
         data = _series_to_dataframe(data, columns_value)
     data.to_sql(table_name, engine, if_exists='replace')
 
@@ -171,6 +181,10 @@ def _series_to_dataframe(data, columns_value):
 
 
 def _path_and_mkdir(path):
-    if not os.path.exists(path):
-        os.makedirs(path)
+    """
+    if dir not exist, make one
+    """
+    dir = os.path.dirname(path)
+    if not os.path.exists(dir):
+        os.makedirs(dir)
     return path

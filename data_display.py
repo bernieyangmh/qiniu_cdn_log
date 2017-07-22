@@ -51,7 +51,6 @@ class DataDisplay(object):
     def _construct_axe(self, data, funciton):
         # 坐标轴的长度
         self.ax0.set_xlim([0, int(1.2 * (data.max()))])
-        print(int(1.2 * (data.max())))
         # self.ax0.set_xlim([0, 2 ** len(str(data.max()))])
         # 设置title和label
 

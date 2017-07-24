@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-__author__ = 'bernie'
-
 from flask import Flask, jsonify, request
 from data import DataCore
 from data_display import DataDisplay
-import re
+import pandas as pd
 from util import traffic_decimal, parse_limit, parse_requests, data_after_argument, save_data
 from json import dumps
+
+__author__ = 'bernie'
 
 app = Flask(__name__)
 
@@ -168,6 +168,8 @@ def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
     data, orient = get_data(data_kind, limit, *args, **kwargs)
     if is_show and not data.empty:
         dd = DataDisplay()
+        if kind == 'pie' and isinstance(data, pd.core.frame.DataFrame):
+            return dumps({'error_kind': "DataFrame don't support pie"})
         dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,
                         line_color=line_color, fig_color=fig_color, funciton=funciton,
                         x_str=x_str, y_str=y_str, title=title, figsize=figsize, dis_tick=dis_tick)

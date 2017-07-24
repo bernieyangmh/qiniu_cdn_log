@@ -15,9 +15,11 @@ re_ip = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 re_time = re.compile(r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$")
 
 
-engine_mysql = create_engine("mysql+pymysql://work:123@localhost:3306/cdn")
+engine_mysql = create_engine("mysql+pymysql://{}:{}@localhost:3306/cdn".format
+                             (os.environ.get('data_role'), os.environ.get('password')))
 
-engine_pg = create_engine("postgresql://work:123@localhost:5432/cdn")
+engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdn".format(
+                            os.environ.get('data_role'), os.environ.get('password')))
 
 series_to_frame_by_kind = {
                            'get_ip_traffic_data': (['ip'], 'traffic'),
@@ -32,12 +34,11 @@ series_to_frame_by_kind = {
                            }
 
 
-
 def singleton(cls, *args, **kw):
-    '''
+    """
     @singleton
-    def fun()
-    '''
+    def fun():
+    """
     instances = {}
 
     def _singleton():
@@ -64,6 +65,12 @@ class SingletonMetaclass(type):
 
 
 def traffic_decimal(x, pos):
+    """
+    :param x: value
+    :param pos: placeholder
+
+    :return: diff unit abbreviation
+    """
     if x <= 1000:
         return '{:1.0f}'.format(x)
     elif 1000 < x <= 1000000:
@@ -78,7 +85,12 @@ def traffic_decimal(x, pos):
 
 
 def data_after_argument(aim_data, *args, **kwargs):
-
+    """
+    if limit doesn't match re,return all
+    if only :x return top x
+    if only x: return last x
+    if x:y return x to y
+    """
     l1 = kwargs.get('limit')[0]
     l2 = kwargs.get('limit')[1]
     if l1 >= 0 and l2:
@@ -102,22 +114,26 @@ def parse_limit(limit):
 
 def parse_requests(request):
     error = {}
-    graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
+    graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde', 'area', 'pie']
     kind = request.args.get('kind', 'line')
     limit = request.args.get('limit', ':')
+
     if kind not in graphic_kinds:
-        error['error_kind'] = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+        error['error_kind'] = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde', 'pie' or 'area'"
     use_index = request.args.get('use_index', True)
+
     if use_index in ['False', 'false', 'FALSE']:
         use_index = False
     is_show = request.args.get('is_show', None)
     dis_tick = request.args.get('dis_tick', '')
+
     if dis_tick:
         if kind == 'barh':
             dis_tick = 'y'
         else:
             dis_tick = 'x'
     ip = request.args.get('ip', '')
+
     if ip and not re_ip.match(ip):
         error['error_ip'] = "Please fill a Correct ip"
     referer = request.args.get('referer', '')
@@ -134,6 +150,10 @@ def parse_requests(request):
 
 
 def convert_time_format(request_time):
+    """
+    GMT convert to Beijing time
+    :return time
+    """
     struct_time = time.strptime(request_time, "[%d/%b/%Y:%X+0800]")
     timestamp = time.mktime(struct_time) + 28800
     time_array = time.localtime(timestamp)
@@ -144,6 +164,9 @@ def convert_time_format(request_time):
 
 
 def save_data(data, data_kind, save_kind, path_or_table):
+    """
+    Store data by arg
+    """
     if save_kind in ['mysql', 'pg', 'postgres']:
         if not path_or_table:
             path_or_table = data_kind+'_'+str(time.time())

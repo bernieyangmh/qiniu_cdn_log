@@ -5,8 +5,8 @@ __author__ = 'berniey'
 
 from util import data_after_argument, series_to_dataframe
 
-class DataAnalysisMethod(object):
 
+class DataAnalysisMethod(object):
 
     @staticmethod
     def url_traffic(datacore, *args, **kwargs):
@@ -57,7 +57,6 @@ class DataAnalysisMethod(object):
         if kwargs.get('end_time'):
             aim_data = aim_data[aim_data['time'] < kwargs.get('end_time')]
         return data_after_argument(aim_data, *args, **kwargs)
-
 
     @staticmethod
     def time_count(datacore, *args, **kwargs):

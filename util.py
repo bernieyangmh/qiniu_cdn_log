@@ -16,10 +16,10 @@ re_time = re.compile(r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$")
 
 
 engine_mysql = create_engine("mysql+pymysql://{}:{}@localhost:3306/cdn".format
-                             (os.environ.get('data_role'), os.environ.get('password')))
+                             (os.environ.get('mysql_role'), os.environ.get('password')))
 
 engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdn".format(
-                            os.environ.get('data_role'), os.environ.get('password')))
+                            os.environ.get('pg_role'), os.environ.get('password')))
 
 series_to_frame_by_kind = {
                            'get_ip_traffic_data': (['ip'], 'traffic'),

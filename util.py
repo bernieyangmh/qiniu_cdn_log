@@ -101,12 +101,12 @@ def parse_limit(limit):
 
 
 def parse_requests(request):
-    error = ''
+    error = {}
     graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde']
     kind = request.args.get('kind', 'line')
     limit = request.args.get('limit', ':')
     if kind not in graphic_kinds:
-        error = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
+        error['error_kind'] = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde' or 'area'"
     use_index = request.args.get('use_index', True)
     if use_index in ['False', 'false', 'FALSE']:
         use_index = False
@@ -119,13 +119,16 @@ def parse_requests(request):
             dis_tick = 'x'
     ip = request.args.get('ip', '')
     if ip and not re_ip.match(ip):
-        error = "Please fill a Correct ip"
+        error['error_ip'] = "Please fill a Correct ip"
     referer = request.args.get('referer', '')
 
-    start_time = request.args.get('start_time')
-    end_time = request.args.get('end_time')
-    if not (re_time.match(start_time) and re_time.match(end_time)):
-        error = "please fill a CORRECT time"
+    start_time = request.args.get('start_time', '')
+    end_time = request.args.get('end_time', '')
+    if start_time and not re_time.match(start_time):
+        error['error_start_time'] = "please fill a CORRECT start_time"
+
+    if end_time and not re_time.match(end_time):
+        error['error_end_time'] = "please fill a CORRECT end_time"
 
     return error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time
 

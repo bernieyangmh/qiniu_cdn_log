@@ -8,7 +8,7 @@ from data import DataCore
 from data_display import DataDisplay
 import re
 from util import traffic_decimal, parse_limit, parse_requests, data_after_argument, save_data
-
+from json import dumps
 
 app = Flask(__name__)
 
@@ -30,7 +30,7 @@ def index():
 def show_log_data():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     status_code = request.args.get('status_code', '')
     url = request.args.get('url', '')
@@ -46,7 +46,7 @@ def show_log_data():
 def show_url_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_traffic_data', xlabel='URL', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
@@ -57,7 +57,7 @@ def show_url_traffic():
 def show_url_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_count_data', xlabel='URL', ylabel='Count',
@@ -69,7 +69,7 @@ def show_url_count():
 def show_ip_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_traffic_data', xlabel='IP', ylabel='Traffic',
@@ -81,7 +81,7 @@ def show_ip_traffic():
 def show_ip_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_count_data', xlabel='IP', ylabel='Count',
@@ -93,7 +93,7 @@ def show_ip_count():
 def show_total_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_total_status_code_count', xlabel='Code', ylabel='Count',
@@ -105,7 +105,7 @@ def show_total_status_code_count():
 def show_ip_url_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_url_status_code_count', xlabel='Ip_Url_Code', ylabel='Count',
@@ -117,7 +117,7 @@ def show_ip_url_status_code_count():
 def show_url_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_status_code_count', xlabel='URL_Code', ylabel='Count',
@@ -129,7 +129,7 @@ def show_url_status_code_count():
 def show_ip_status_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_status_code_count', xlabel='IP&Code', ylabel='Count',
@@ -141,7 +141,7 @@ def show_ip_status_code_count():
 def show_time_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_time_traffic', xlabel='Time', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
@@ -153,7 +153,7 @@ def show_time_traffic():
 def show_time_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
-        return error
+        return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_time_count', xlabel='Time', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,

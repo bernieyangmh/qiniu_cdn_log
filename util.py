@@ -12,6 +12,7 @@ __author__ = 'berniey'
 
 re_limit = re.compile(r"^[0-9]*:[0-9]*")
 re_ip = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
+re_time = re.compile(r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$")
 
 
 engine_mysql = create_engine("mysql+pymysql://work:123@localhost:3306/cdn")
@@ -63,9 +64,11 @@ class SingletonMetaclass(type):
 
 
 def traffic_decimal(x, pos):
-    if x <= 1000000:
-        return '{:1.0f}'.format(x*1e-3)
-    if 1000000 < x <= 1000000000:
+    if x <= 1000:
+        return '{:1.0f}'.format(x)
+    elif 1000 < x <= 1000000:
+        return '{:1.0f}K'.format(x*1e-3)
+    elif 1000000 < x <= 1000000000:
         return '{:1.1f}M'.format(x*1e-6)
     elif 1000000000 <= x < 1000000000000:
         return '{:1.2f}G'.format(x*1e-9)
@@ -121,6 +124,8 @@ def parse_requests(request):
 
     start_time = request.args.get('start_time')
     end_time = request.args.get('end_time')
+    if not (re_time.match(start_time) and re_time.match(end_time)):
+        error = "please fill a CORRECT time"
 
     return error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time
 
@@ -130,6 +135,7 @@ def convert_time_format(request_time):
     timestamp = time.mktime(struct_time) + 28800
     time_array = time.localtime(timestamp)
     time_date = time.strftime("%Y-%m-%d %H:%M:%S", time_array)
+    # 如果需要时间戳并且不需要时间的绘图，可以加上timestamp
     # return time_date, timestamp
     return time_date
 
@@ -148,7 +154,7 @@ def save_data(data, data_kind, save_kind, path_or_table):
 def _save_file(data, data_kind, path, file_kinds):
     columns_value = series_to_frame_by_kind.get(data_kind)
     if columns_value:
-        data = _series_to_dataframe(data, columns_value)
+        data = series_to_dataframe(data, columns_value)
     path = _path_and_mkdir(path)
     if file_kinds == 'excel':
         from openpyxl import load_workbook
@@ -169,11 +175,11 @@ def _save_database(data, data_kind, save_kind, table_name):
     #选择数据库引擎
     engine = engine_mysql if save_kind == 'mysql' else engine_pg
     if columns_value:
-        data = _series_to_dataframe(data, columns_value)
+        data = series_to_dataframe(data, columns_value)
     data.to_sql(table_name, engine, if_exists='replace')
 
 
-def _series_to_dataframe(data, columns_value):
+def series_to_dataframe(data, columns_value):
     df = pd.DataFrame([i for i in data.index], columns=columns_value[0])
     df[columns_value[1]] = data.values
     return df

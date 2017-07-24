@@ -3,7 +3,7 @@
 
 __author__ = 'berniey'
 
-from util import data_after_argument
+from util import data_after_argument, series_to_dataframe
 
 class DataAnalysisMethod(object):
 
@@ -41,7 +41,6 @@ class DataAnalysisMethod(object):
     @staticmethod
     def url_status_code_count(datacore, *args, **kwargs):
         aim_data = datacore.groupby('url')['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
-        print(aim_data)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
@@ -50,10 +49,27 @@ class DataAnalysisMethod(object):
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
-    def time_traffic_count(datacore, *args, **kwargs):
-        aim_data = datacore.groupby('request_time')['TrafficSize'].sum().sort_values(ascending=False)
+    def time_traffic(datacore, *args, **kwargs):
+        aim_data = datacore.groupby('request_time')['TrafficSize'].sum()
+        aim_data = series_to_dataframe(aim_data, (['time'], 'traffic'))
+        if kwargs.get('start_time'):
+            aim_data = aim_data[kwargs.get('start_time') < aim_data['time']]
+        if kwargs.get('end_time'):
+            aim_data = aim_data[aim_data['time'] < kwargs.get('end_time')]
         return data_after_argument(aim_data, *args, **kwargs)
 
+
+    @staticmethod
+    def time_count(datacore, *args, **kwargs):
+        aim_data = datacore['request_time'].value_counts(sort=False).rename('count').sort_index()
+        print(aim_data)
+        aim_data = series_to_dataframe(aim_data, (['time'], 'count'))
+        print(aim_data)
+        if kwargs.get('start_time'):
+            aim_data = aim_data[kwargs.get('start_time') < aim_data['time']]
+        if kwargs.get('end_time'):
+            aim_data = aim_data[aim_data['time'] < kwargs.get('end_time')]
+        return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
     def data_by_factor(datacore, *args, **kwargs):

@@ -137,22 +137,35 @@ def show_ip_status_code_count():
                              x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7))
 
 
-@app.route('/get_time_traffic_count', methods=['GET'])
-def show_time_traffic_count():
+@app.route('/get_time_traffic', methods=['GET'])
+def show_time_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return error
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_time_traffic_count', xlabel='Time&Traffic', ylabel='Count',
+                             data_kind='get_time_traffic', xlabel='Time', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='Time&Traffic_Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Time&Traffic', figsize=(12, 7),
+                             start_time=start_time, end_time=end_time)
+
+
+@app.route('/get_time_count', methods=['GET'])
+def show_time_count():
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    if error:
+        return error
+    return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
+                             data_kind='get_time_count', xlabel='Time', ylabel='Count',
+                             line_color='r', fig_color='b', funciton=traffic_decimal,
+                             x_str='x', y_str='y', title='Time&Count', figsize=(12, 7),
+                             start_time=start_time, end_time=end_time)
 
 
 def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
                       xlabel, ylabel, line_color, fig_color, funciton,
-                      x_str, y_str, title, figsize
+                      x_str, y_str, title, figsize, *args, **kwargs
                       ):
-    data, orient = get_data(data_kind, limit)
+    data, orient = get_data(data_kind, limit, *args, **kwargs)
     if is_show and not data.empty:
         dd = DataDisplay()
         dd.show_graphic(data, kind, use_index, xlabel=xlabel, ylabel=ylabel,

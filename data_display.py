@@ -21,7 +21,7 @@ class DataDisplay(object):
     def _drawing(self, data, kind, use_index, xlabel, ylabel, line_color,
                       fig_color, funciton, x_str, y_str, title, figsize, dis_tick):
         self._construct_figure(figsize=figsize)
-        if kind in ['bar', 'barh']:
+        if kind in ['bar', 'barh'] and isinstance(data, pd.core.frame.Series):
             self._construct_guideline_avg(data, color=line_color)
         self._construct_axe(data, funciton, kind)
         self._chose_graphic_kind(data, kind=kind, use_index=use_index, xlabel=xlabel,
@@ -29,7 +29,6 @@ class DataDisplay(object):
                                  x_str=x_str, y_str=y_str, title=title
                                  )
         self._ticks(dis_tick)
-
         plt.show()
 
     def _ticks(self, dis_tick):
@@ -51,13 +50,17 @@ class DataDisplay(object):
 
     def _construct_axe(self, data, funciton, kind):
         # 坐标轴的长度
-        self.ax0.set_xlim([0, int(1.2 * (data.max()))])
-        # self.ax0.set_xlim([0, 2 ** len(str(data.max()))])
+        # 对于dateFrame，max返回的是series
+        if isinstance(data, pd.core.frame.DataFrame):
+            self.ax0.set_xlim([0, int(1.2 * (data.max().values[1]))])
+        else:
+            self.ax0.set_xlim([0, int(1.2 * (data.max()))])
         # 设置title和label
 
         # 函数，改变x轴的单位
         if funciton:
             formatter = FuncFormatter(funciton)
+
             if kind == 'barh':
                 self.ax0.xaxis.set_major_formatter(formatter)
             else:

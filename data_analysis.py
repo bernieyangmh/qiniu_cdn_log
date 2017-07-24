@@ -29,22 +29,22 @@ class DataAnalysisMethod(object):
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
-    def total_status_code_count(datacore, *args, **kwargs):
+    def code_count(datacore, *args, **kwargs):
         aim_data = datacore['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
-    def ip_url_status_code_count(datacore, *args, **kwargs):
+    def ip_url_code_count(datacore, *args, **kwargs):
         aim_data = datacore.groupby(['ip', 'url'])['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
-    def url_status_code_count(datacore, *args, **kwargs):
+    def url_code_count(datacore, *args, **kwargs):
         aim_data = datacore.groupby('url')['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 
     @staticmethod
-    def ip_status_code_count(datacore, *args, **kwargs):
+    def ip_code_count(datacore, *args, **kwargs):
         aim_data = datacore.groupby('ip')['StatusCode'].value_counts().rename('count').sort_values(ascending=False)
         return data_after_argument(aim_data, *args, **kwargs)
 

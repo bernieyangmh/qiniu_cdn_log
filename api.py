@@ -32,7 +32,7 @@ def show_log_data():
     if error:
         return dumps(error)
 
-    status_code = request.args.get('status_code', '')
+    status_code = request.args.get('code', '')
     url = request.args.get('url', '')
     data, orient = get_data('get_data_by_factor', limit, status_code=status_code,
                             url=url, ip=ip, referer=referer, start_time=start_time,
@@ -48,7 +48,7 @@ def show_url_traffic():
     if error:
         return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_traffic_data', xlabel='URL', ylabel='Traffic',
+                             data_kind='get_url_traffic', xlabel='URL', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='URL&Traffic', figsize=(12, 7))
 
@@ -60,7 +60,7 @@ def show_url_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_count_data', xlabel='URL', ylabel='Count',
+                             data_kind='get_url_count', xlabel='URL', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='URL&Count', figsize=(12, 7))
 
@@ -72,7 +72,7 @@ def show_ip_traffic():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_traffic_data', xlabel='IP', ylabel='Traffic',
+                             data_kind='get_ip_traffic', xlabel='IP', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='IP&Traffic', figsize=(12, 7))
 
@@ -84,7 +84,7 @@ def show_ip_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_count_data', xlabel='IP', ylabel='Count',
+                             data_kind='get_ip_count', xlabel='IP', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='x', title='IP&Count', figsize=(12, 7))
 
@@ -96,7 +96,7 @@ def show_total_status_code_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_total_status_code_count', xlabel='Code', ylabel='Count',
+                             data_kind='get_code_count', xlabel='Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='Code&Count', figsize=(12, 7))
 
@@ -108,7 +108,7 @@ def show_ip_url_status_code_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_url_status_code_count', xlabel='Ip_Url_Code', ylabel='Count',
+                             data_kind='get_ip_url_code_count', xlabel='Ip_Url_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7))
 
@@ -120,7 +120,7 @@ def show_url_status_code_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_url_status_code_count', xlabel='URL_Code', ylabel='Count',
+                             data_kind='get_url_code_count', xlabel='URL_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7))
 
@@ -132,7 +132,7 @@ def show_ip_status_code_count():
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
-                             data_kind='get_ip_status_code_count', xlabel='IP&Code', ylabel='Count',
+                             data_kind='get_ip_code_count', xlabel='IP&Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7))
 

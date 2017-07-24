@@ -34,29 +34,29 @@ class DataCore(object):
             self.chunks = []
             return self.data
 
-    def get_url_traffic_data(self, *args, **kwargs):
+    def get_url_traffic(self, *args, **kwargs):
         return self._set_url_traffic_data(*args, **kwargs)
 
-    def get_url_count_data(self, *args, **kwargs):
+    def get_url_count(self, *args, **kwargs):
         return self._set_url_count_data(*args, **kwargs)
 
-    def get_ip_traffic_data(self, *args, **kwargs):
+    def get_ip_traffic(self, *args, **kwargs):
         return self._set_ip_traffic_data(*args, **kwargs)
 
-    def get_ip_count_data(self, *args, **kwargs):
+    def get_ip_count(self, *args, **kwargs):
         return self._set_ip_count_data(*args, **kwargs)
 
-    def get_total_status_code_count(self, *args, **kwargs):
-        return self._set_total_status_code_count(*args, **kwargs)
+    def get_code_count(self, *args, **kwargs):
+        return self._set_code_count(*args, **kwargs)
 
-    def get_ip_url_status_code_count(self, *args, **kwargs):
-        return self._set_ip_url_status_code_count(*args, **kwargs)
+    def get_ip_url_code_count(self, *args, **kwargs):
+        return self._set_ip_url_code_count(*args, **kwargs)
 
-    def get_url_status_code_count(self, *args, **kwargs):
-        return self._set_url_status_code_count(*args, **kwargs)
+    def get_url_code_count(self, *args, **kwargs):
+        return self._set_url_code_count(*args, **kwargs)
 
-    def get_ip_status_code_count(self, *args, **kwargs):
-        return self._set_ip_status_code_count(*args, **kwargs)
+    def get_ip_code_count(self, *args, **kwargs):
+        return self._set_ip_code_count(*args, **kwargs)
 
     def get_time_traffic(self, *args, **kwargs):
         return self._set_time_traffic(*args, **kwargs)
@@ -79,17 +79,17 @@ class DataCore(object):
     def _set_ip_count_data(self, *args, **kwargs):
         return DataAnalysisMethod.ip_count(self.data, *args, **kwargs)
 
-    def _set_total_status_code_count(self, *args, **kwargs):
-        return DataAnalysisMethod.total_status_code_count(self.data, *args, **kwargs)
+    def _set_code_count(self, *args, **kwargs):
+        return DataAnalysisMethod.code_count(self.data, *args, **kwargs)
 
-    def _set_ip_url_status_code_count(self, *args, **kwargs):
-        return DataAnalysisMethod.ip_url_status_code_count(self.data, *args, **kwargs)
+    def _set_ip_url_code_count(self, *args, **kwargs):
+        return DataAnalysisMethod.ip_url_code_count(self.data, *args, **kwargs)
 
-    def _set_url_status_code_count(self, *args, **kwargs):
-        return DataAnalysisMethod.url_status_code_count(self.data, *args, **kwargs)
+    def _set_url_code_count(self, *args, **kwargs):
+        return DataAnalysisMethod.url_code_count(self.data, *args, **kwargs)
 
-    def _set_ip_status_code_count(self, *args, **kwargs):
-        return DataAnalysisMethod.ip_status_code_count(self.data, *args, **kwargs)
+    def _set_ip_code_count(self, *args, **kwargs):
+        return DataAnalysisMethod.ip_code_count(self.data, *args, **kwargs)
 
     def _set_time_traffic(self, *args, **kwargs):
         return DataAnalysisMethod.time_traffic(self.data, *args, **kwargs)

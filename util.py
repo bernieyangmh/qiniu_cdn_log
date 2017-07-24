@@ -16,10 +16,10 @@ re_time = re.compile(r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$")
 
 
 engine_mysql = create_engine("mysql+pymysql://{}:{}@localhost:3306/cdn".format
-                             (os.environ.get('mysql_role'), os.environ.get('password')))
+                             (os.environ.get('mysql_role'), os.environ.get('mysql_password')))
 
 engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdn".format(
-                            os.environ.get('pg_role'), os.environ.get('password')))
+                            os.environ.get('pg_role'), os.environ.get('pg_password')))
 
 series_to_frame_by_kind = {
                            'get_ip_traffic_data': (['ip'], 'traffic'),
@@ -167,7 +167,7 @@ def save_data(data, data_kind, save_kind, path_or_table):
     """
     Store data by arg
     """
-    if save_kind in ['mysql', 'pg', 'postgres']:
+    if save_kind in ['mysql', 'pg', 'postgresql']:
         if not path_or_table:
             path_or_table = data_kind+'_'+str(time.time())
         _save_database(data, data_kind, save_kind, path_or_table)

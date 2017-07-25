@@ -89,8 +89,8 @@ def show_ip_count():
                              x_str='x', y_str='x', title='IP&Count', figsize=(12, 7))
 
 
-@app.route('/get_total_status_code_count', methods=['GET'])
-def show_total_status_code_count():
+@app.route('/get_code_count', methods=['GET'])
+def show_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return dumps(error)
@@ -101,8 +101,8 @@ def show_total_status_code_count():
                              x_str='x', y_str='y', title='Code&Count', figsize=(12, 7))
 
 
-@app.route('/get_ip_url_status_code_count', methods=['GET'])
-def show_ip_url_status_code_count():
+@app.route('/get_ip_url_code_count', methods=['GET'])
+def show_ip_url_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return dumps(error)
@@ -113,8 +113,8 @@ def show_ip_url_status_code_count():
                              x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7))
 
 
-@app.route('/get_url_status_code_count', methods=['GET'])
-def show_url_status_code_count():
+@app.route('/get_url_code_count', methods=['GET'])
+def show_url_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return dumps(error)
@@ -125,8 +125,8 @@ def show_url_status_code_count():
                              x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7))
 
 
-@app.route('/get_ip_status_code_count', methods=['GET'])
-def show_ip_status_code_count():
+@app.route('/get_ip_code_count', methods=['GET'])
+def show_ip_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
     if error:
         return dumps(error)

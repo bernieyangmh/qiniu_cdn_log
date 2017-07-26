@@ -26,10 +26,10 @@ series_to_frame_by_kind = {
                            'get_ip_count_data': (['ip'], 'count'),
                            'get_url_traffic_data': (['url'], 'traffic'),
                            'get_url_count_data': (['url'], 'count'),
-                           'get_total_status_code_count': (['code'], 'count'),
-                           'get_url_status_code_count': (['url', 'code'], 'count'),
-                           'get_ip_status_code_count': (['ip', 'code'], 'count'),
-                           'get_ip_url_status_code_count': (['ip', 'url', 'code'], 'count'),
+                           'get_total_code_count': (['code'], 'count'),
+                           'get_url_code_count': (['url', 'code'], 'count'),
+                           'get_ip_code_count': (['ip', 'code'], 'count'),
+                           'get_ip_url_code_count': (['ip', 'url', 'code'], 'count'),
                            'get_time_traffic_count': (['time'], 'traffic'),
                            }
 
@@ -117,36 +117,37 @@ def parse_requests(request):
     graphic_kinds = ['line', 'hist', 'area', 'bar', 'barh', 'kde', 'area', 'pie']
     kind = request.args.get('kind', 'line')
     limit = request.args.get('limit', ':')
+    referer = request.args.get('referer', '')
+    use_index = request.args.get('use_index', True)
+    is_show = request.args.get('is_show', None)
+    dis_tick = request.args.get('dis_tick', '')
+    ip = request.args.get('ip', '')
+    start_time = request.args.get('start_time', '')
+    end_time = request.args.get('end_time', '')
+    is_qiniu = request.args.get('is_qiniu', 'True')
 
     if kind not in graphic_kinds:
         error['error_kind'] = "you must have a choice among 'line','hist', 'bar', 'barh', 'kde', 'pie' or 'area'"
-    use_index = request.args.get('use_index', True)
 
     if use_index in ['False', 'false', 'FALSE']:
         use_index = False
-    is_show = request.args.get('is_show', None)
-    dis_tick = request.args.get('dis_tick', '')
 
     if dis_tick:
         if kind == 'barh':
             dis_tick = 'y'
         else:
             dis_tick = 'x'
-    ip = request.args.get('ip', '')
 
     if ip and not re_ip.match(ip):
         error['error_ip'] = "Please fill a Correct ip"
-    referer = request.args.get('referer', '')
 
-    start_time = request.args.get('start_time', '')
-    end_time = request.args.get('end_time', '')
     if start_time and not re_time.match(start_time):
         error['error_start_time'] = "please fill a CORRECT start_time"
 
     if end_time and not re_time.match(end_time):
         error['error_end_time'] = "please fill a CORRECT end_time"
 
-    return error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time
+    return error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu
 
 
 def convert_time_format(request_time):
@@ -201,6 +202,7 @@ def _save_database(data, data_kind, save_kind, table_name):
     #选择数据库引擎
     engine = engine_mysql if save_kind == 'mysql' else engine_pg
     if columns_value:
+
         data = series_to_dataframe(data, columns_value)
     data.to_sql(table_name, engine, if_exists='replace')
 

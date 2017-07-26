@@ -28,7 +28,7 @@ def index():
 
 @app.route('/get_total_data', methods=['GET'])
 def show_log_data():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
@@ -36,7 +36,7 @@ def show_log_data():
     url = request.args.get('url', '')
     data, orient = get_data('get_data_by_factor', limit, status_code=status_code,
                             url=url, ip=ip, referer=referer, start_time=start_time,
-                            end_time=end_time)
+                            end_time=end_time, is_qiniu=is_qiniu)
     if request.args.get('save'):
         save_data(data, 'get_data_by_factor', request.args.get('save'), request.args.get('pt'))
     return data.to_json(orient=orient)
@@ -44,121 +44,121 @@ def show_log_data():
 
 @app.route('/get_url_traffic', methods=['GET'])
 def show_url_traffic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_traffic', xlabel='URL', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='URL&Traffic', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL&Traffic', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_url_count', methods=['GET'])
 def show_url_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_count', xlabel='URL', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='URL&Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_ip_traffic', methods=['GET'])
 def show_ip_traffic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_traffic', xlabel='IP', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='IP&Traffic', figsize=(12, 7))
+                             x_str='x', y_str='y', title='IP&Traffic', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_ip_count', methods=['GET'])
 def show_ip_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_count', xlabel='IP', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='x', title='IP&Count', figsize=(12, 7))
+                             x_str='x', y_str='x', title='IP&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_code_count', methods=['GET'])
 def show_code_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_code_count', xlabel='Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='Code&Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_ip_url_code_count', methods=['GET'])
 def show_ip_url_code_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_url_code_count', xlabel='Ip_Url_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_url_code_count', methods=['GET'])
 def show_url_code_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_url_code_count', xlabel='URL_Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_ip_code_count', methods=['GET'])
 def show_ip_code_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
 
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_ip_code_count', xlabel='IP&Code', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
-                             x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7))
+                             x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
 @app.route('/get_time_traffic', methods=['GET'])
 def show_time_traffic():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_time_traffic', xlabel='Time', ylabel='Traffic',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='Time&Traffic', figsize=(12, 7),
-                             start_time=start_time, end_time=end_time)
+                             start_time=start_time, end_time=end_time, is_qiniu=is_qiniu)
 
 
 @app.route('/get_time_count', methods=['GET'])
 def show_time_count():
-    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time = parse_requests(request)
+    error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
         return dumps(error)
     return get_data_and_show(kind, limit, use_index, is_show, dis_tick,
                              data_kind='get_time_count', xlabel='Time', ylabel='Count',
                              line_color='r', fig_color='b', funciton=traffic_decimal,
                              x_str='x', y_str='y', title='Time&Count', figsize=(12, 7),
-                             start_time=start_time, end_time=end_time)
+                             start_time=start_time, end_time=end_time, is_qiniu=is_qiniu)
 
 
 def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
@@ -180,7 +180,10 @@ def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
 
 def get_data(data_kind, limit, *args, **kwargs):
     d = DataCore()
-    d.generate_data()
+    if kwargs.get('is_qiniu'):
+        d.generate_data(kwargs.get('is_qiniu'))
+    else:
+        d.generate_data()
     data = eval('d.{}(limit=parse_limit({}), *args, **kwargs)'.format(data_kind, 'limit'))
     orient = 'table' if data_kind in orient_format else 'index'
     return data, orient

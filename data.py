@@ -1,17 +1,14 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-__author__ = 'berniey'
-
 from config import GetConfig
-import numpy as np
+
 import pandas as pd
-import json
-import matplotlib.pyplot as plt
-from matplotlib.ticker import FuncFormatter
-from util import SingletonMetaclass, singleton, convert_time_format
+from util import singleton, convert_time_format
 from data_analysis import DataAnalysisMethod
-from util import traffic_decimal
+from util import parse_limit
+
+__author__ = 'berniey'
 
 
 @singleton
@@ -24,13 +21,12 @@ class DataCore(object):
         self.data = None
         self.files = self._get_files()
 
-
-
-    def generate_data(self):
+    def generate_data(self, is_qiniu='True'):
         self._get_chunks()
         if (self.chunks or self.data) or isinstance(self.data, pd.core.frame.DataFrame):
             self.data = self._aggregate_data(self.chunks)
-            self._change_data(self.data)
+            if is_qiniu != 'f':
+                self._change_data(self.data)
             self.chunks = []
             return self.data
 
@@ -100,10 +96,8 @@ class DataCore(object):
     def _set_data_by_factor(self, *args, **kwargs):
         return DataAnalysisMethod.data_by_factor(self.data, *args, **kwargs)
 
-
     def _get_files(self):
         return GetConfig().get_log()
-
 
     def _get_chunks(self):
         for file in self.files:
@@ -145,5 +139,5 @@ class DataCore(object):
 if __name__ == '__main__':
     d = DataCore()
     d.generate_data()
-    print(d.get_url_traffic_data())
+    print(d.get_data_by_factor(limit=parse_limit(':10')))
 

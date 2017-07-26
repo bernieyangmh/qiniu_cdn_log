@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-__author__ = 'berniey'
 
 from util import data_after_argument, series_to_dataframe
+
+__author__ = 'berniey'
 
 
 class DataAnalysisMethod(object):
@@ -61,9 +62,7 @@ class DataAnalysisMethod(object):
     @staticmethod
     def time_count(datacore, *args, **kwargs):
         aim_data = datacore['request_time'].value_counts(sort=False).rename('count').sort_index()
-        print(aim_data)
         aim_data = series_to_dataframe(aim_data, (['time'], 'count'))
-        print(aim_data)
         if kwargs.get('start_time'):
             aim_data = aim_data[kwargs.get('start_time') < aim_data['time']]
         if kwargs.get('end_time'):

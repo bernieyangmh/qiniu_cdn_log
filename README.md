@@ -49,12 +49,12 @@ log_path:/Users/berniey/Documents/fun/Qiniu-cdnLog/log_path
 | pg_password      |   123 | pg数据库密码  |
 
 ### 2.命令行调用
-在data.py调用实例d的函数，通过命令***python3 data.py***获得指定的数据
-####**Todo**看情况支持命令行参数
+在data.py调用实例d的函数，通过命令`python3 data.py`获得指定的数据
 
 
 ### 3.接口调用
-python3 api.py 启动flask实例，用接口调用
+`python3 api.py`
+启动flask实例，用接口调用
 
 请求格式：
 ```

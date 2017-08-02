@@ -178,6 +178,46 @@ def save_data(data, data_kind, save_kind, path_or_table):
         _save_file(data, data_kind, path_or_table, file_kinds='csv')
 
 
+def print_summary_information(d, num=20):
+    dict = d.get_code_count(limit=parse_limit(':{}'.format(num))).to_dict()
+    print("\n打印日志汇总信息")
+    print('*'*50+'\n')
+    print("每个状态码所对应的访问次数\n")
+    print("状态码      访问次数")
+    for key, value in dict.items():
+        print("{:<4} : {:10}".format(key, value))
+    print("\n" + '*'*50 + "\n")
+    print("流量排名前{}的url\n".format(num))
+    print("{:<20}{}".format("流量(b)", "url", width=20))
+    dict = d.get_url_traffic(limit=parse_limit(':{}'.format(num))).to_dict()
+    for key, value in dict.items():
+        print("{:<20} : {:10}".format(value, key))
+
+    print("\n" + '*'*50 + "\n")
+
+    print("访问次数排名前{}的url\n".format(num))
+    print("{:<20}{}".format("访问次数", "url", width=20))
+    dict = d.get_url_count(limit=parse_limit(':{}'.format(num))).to_dict()
+    for key, value in dict.items():
+        print("{:<20} : {:10}".format(value, key))
+
+    print("\n" + '*'*50 + "\n")
+
+    print("流量排名前{}的IP\n".format(num))
+    print("{:<20}{}".format("流量", "IP", width=20))
+    dict = d.get_ip_traffic(limit=parse_limit(':{}'.format(num))).to_dict()
+    for key, value in dict.items():
+        print("{:<20} : {:10}".format(value, key))
+
+    print("\n" + '*'*50 + "\n")
+
+    print("访问次数排名前{}的IP\n".format(num))
+    print("{:<20}{}".format("访问次数", "IP", width=20))
+    dict = d.get_ip_count(limit=parse_limit(':{}'.format(num))).to_dict()
+    for key, value in dict.items():
+        print("{:<20} : {:10}".format(value, key))
+
+
 def _save_file(data, data_kind, path, file_kinds):
     columns_value = series_to_frame_by_kind.get(data_kind)
     if columns_value:
@@ -221,3 +261,5 @@ def _path_and_mkdir(path):
     if not os.path.exists(dir):
         os.makedirs(dir)
     return path
+
+

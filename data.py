@@ -6,8 +6,8 @@ from config import GetConfig
 import pandas as pd
 from util import singleton, convert_time_format
 from data_analysis import DataAnalysisMethod
-from util import parse_limit
-
+from util import parse_limit, print_summary_information
+import sys
 __author__ = 'berniey'
 
 
@@ -139,5 +139,8 @@ class DataCore(object):
 if __name__ == '__main__':
     d = DataCore()
     d.generate_data()
-    print(d.get_data_by_factor(limit=parse_limit(':10')))
+    num = 20
+    if sys.argv[1:]:
+        num = int(sys.argv[1])
+    print_summary_information(d, num)
 

@@ -15,10 +15,10 @@ re_ip = re.compile(r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$")
 re_time = re.compile(r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$")
 
 
-engine_mysql = create_engine("mysql+pymysql://{}:{}@localhost:3306/cdn".format
+engine_mysql = create_engine("mysql+pymysql://{}:{}@localhost:3306/cdnlog".format
                              (os.environ.get('mysql_role'), os.environ.get('mysql_password')))
 
-engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdn".format(
+engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdnlog".format(
                             os.environ.get('pg_role'), os.environ.get('pg_password')))
 
 series_to_frame_by_kind = {

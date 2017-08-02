@@ -8,6 +8,8 @@ from util import singleton, convert_time_format
 from data_analysis import DataAnalysisMethod
 from util import parse_limit, print_summary_information
 import sys
+
+
 __author__ = 'berniey'
 
 
@@ -100,6 +102,8 @@ class DataCore(object):
         return GetConfig().get_log()
 
     def _get_chunks(self):
+        if not self.files:
+            raise Exception("未配置文件")
         for file in self.files:
             self._get_chunk_from_log(file)
 

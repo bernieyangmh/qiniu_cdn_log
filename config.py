@@ -61,19 +61,19 @@ class GetConfig(object):
     @LazyProperty
     def _get_files_path(self):
         path = self._config_file.get('log_Path', 'log_path')
-        files_list = []
-        for i in os.listdir(path):
-            files_list.append(i)
-        return files_list
+        if path:
+            files_list = []
+            for i in os.listdir(path):
+                files_list.append(path+os.sep+i)
+            return files_list
 
-    def get_log(self, kind='files'):
-        if kind == 'files':
+    def get_log(self):
+        if self._get_files_path and self._get_files[0]:
+            return self._get_files+self._get_files_path
+        if self._get_files[0]:
             return self._get_files
-        if kind == 'path':
+        if self._get_files_path:
             return self._get_files_path
-        # todo exception
-        else:
-            return 'You made a wrong choice at get_log'
 
 
 if __name__ == '__main__':

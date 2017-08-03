@@ -121,23 +121,22 @@ class DataCore(object):
     def _aggregate_data(self, chunks):
         return pd.concat(chunks, ignore_index=True)
 
-    def _change_data(self, df):
-        df[3] = df[3] + df[4]
-        dx = pd.DataFrame(df[5].str.split(' ').tolist())
-        df.drop([4, 5], axis=1, inplace=True)
+    def _change_data(self, data):
+        data[3] = data[3] + data[4]
+        d_time = pd.DataFrame(data[5].str.split(' ').tolist())
+        data.drop([4, 5], axis=1, inplace=True)
 
-        df.insert(4, 'z', dx[0])
-        df.insert(5, 'y', dx[1])
-        df.insert(6, 'x', dx[2])
-        dd = pd.DataFrame(df)
+        data.insert(4, 'z', d_time[0])
+        data.insert(5, 'y', d_time[1])
+        data.insert(6, 'x', d_time[2])
+        pr_data = pd.DataFrame(data)
 
-        dd.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method',
+        pr_data.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method',
                            'y': 'url', 'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize',
                            8: 'referer', 9: 'UserAgent'}, inplace=True)
 
-        ddd = dd['request_time'].apply(convert_time_format)
-        dd['request_time'] = ddd
-        self.data = dd
+        pr_data['request_time'] = pr_data['request_time'].apply(convert_time_format)
+        self.data = pr_data
 
 
 if __name__ == '__main__':

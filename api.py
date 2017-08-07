@@ -19,6 +19,8 @@ api_list = {
 
 # 列表中的数据json格式用table
 orient_format = ['get_time_traffic_count', 'get_url_status_code_count', 'get_ip_status_code_count']
+d = DataCore()
+data_io = False
 
 
 @app.route('/')
@@ -179,11 +181,14 @@ def get_data_and_show(kind, limit, use_index, is_show, dis_tick, data_kind,
 
 
 def get_data(data_kind, limit, *args, **kwargs):
-    d = DataCore()
-    if kwargs.get('is_qiniu'):
-        d.generate_data(kwargs.get('is_qiniu'))
-    else:
-        d.generate_data()
+    global data_io
+    if not data_io:
+        if kwargs.get('is_qiniu'):
+            d.generate_data(kwargs.get('is_qiniu'))
+            data_io = True
+        else:
+            d.generate_data()
+            data_io = True
     data = eval('d.{}(limit=parse_limit({}), *args, **kwargs)'.format(data_kind, 'limit'))
     orient = 'table' if data_kind in orient_format else 'index'
     return data, orient

@@ -22,11 +22,11 @@ engine_pg = create_engine("postgresql://{}:{}@localhost:5432/cdnlog".format(
                             os.environ.get('pg_role'), os.environ.get('pg_password')))
 
 series_to_frame_by_kind = {
-                           'get_ip_traffic_data': (['ip'], 'traffic'),
-                           'get_ip_count_data': (['ip'], 'count'),
-                           'get_url_traffic_data': (['url'], 'traffic'),
-                           'get_url_count_data': (['url'], 'count'),
-                           'get_total_code_count': (['code'], 'count'),
+                           'get_ip_traffic': (['ip'], 'traffic'),
+                           'get_ip_count': (['ip'], 'count'),
+                           'get_url_traffic': (['url'], 'traffic'),
+                           'get_url_count': (['url'], 'count'),
+                           'get_code_count': (['code'], 'count'),
                            'get_url_code_count': (['url', 'code'], 'count'),
                            'get_ip_code_count': (['ip', 'code'], 'count'),
                            'get_ip_url_code_count': (['ip', 'url', 'code'], 'count'),
@@ -230,6 +230,7 @@ def _save_file(data, data_kind, path, file_kinds):
                 writer.book = load_workbook(path)
                 data.to_excel(writer, data_kind)
         else:
+            print(path)
             out = pd.ExcelWriter(path)
             data.to_excel(out, data_kind)
             out.save()
@@ -242,7 +243,6 @@ def _save_database(data, data_kind, save_kind, table_name):
     #选择数据库引擎
     engine = engine_mysql if save_kind == 'mysql' else engine_pg
     if columns_value:
-
         data = series_to_dataframe(data, columns_value)
     data.to_sql(table_name, engine, if_exists='replace')
 

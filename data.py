@@ -18,12 +18,14 @@ class DataCore(object):
 
     def __init__(self, chunksize=10000000):
         # one size of chunk
+        print("Init data cls")
         self.chunk_size = chunksize
         self.chunks = []
         self.data = None
         self.files = self._get_files()
 
     def generate_data(self, is_qiniu='True'):
+        print("Generate Data")
         self._get_chunks()
         if (self.chunks or self.data) or isinstance(self.data, pd.core.frame.DataFrame):
             self.data = self._aggregate_data(self.chunks)
@@ -140,10 +142,19 @@ class DataCore(object):
 
 
 if __name__ == '__main__':
+    import time
+    a = time.time()
     d = DataCore()
     d.generate_data()
+    b = time.time()
+    print("--日志行数--")
+    print(d.data.size)
     num = 20
     if sys.argv[1:]:
         num = int(sys.argv[1])
     print_summary_information(d, num)
+    print("数据分析花费时间")
+    print(time.time()-b)
+    print("汇总信息花费总时间")
+    print(time.time()-a)
 

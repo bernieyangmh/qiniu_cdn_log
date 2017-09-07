@@ -73,7 +73,7 @@ http://127.0.0.1/api_path?<arg>=<value>&<arg>=<value>...
 | start_time      |    2017-03-02 18:43:24 | 正则表达式r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$" 返回指定时间之**后**的数据  |
 | end_time      |   2017-03-02 18:43:24 | 正则表达式r"^\d{4}\-\d{2}\-\d{2}\s\d{2}\:\d{2}\:\d{2}$" 返回指定时间之**前**的数据  |
 | save      |    mysql/pg/postgresql/csv/excel | 存储的类型，不指定则不存储  |
-| pg      |    table_name/Users/user/Documents/d:\doc | 表名或路径，不指定表名默认为API_PATH+当前时间戳，路径为项目的目录  |
+| pt      |    table_name/Users/user/Documents/d:\doc | 表名或路径，不指定表名默认为API_PATH+当前时间戳，路径为项目的目录  |
 | is_show      |    任意字符 | 存在值则对返回的数据绘图  |
 | kind      | 'line', 'hist', 'area', 'bar', 'barh', 'kde', 'area', 'pie' | 图像的形式  |
 | use_index      |     boolean, default True | 使用index作为x轴  |

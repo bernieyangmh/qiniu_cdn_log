@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 
 api_list = {
-    '/show_url_traffic_data': u'''show all url's traffic''',
+    'hello ': u'''Thanks for using''',
 }
 
 # 列表中的数据json格式用table

@@ -230,7 +230,6 @@ def _save_file(data, data_kind, path, file_kinds):
                 writer.book = load_workbook(path)
                 data.to_excel(writer, data_kind)
         else:
-            print(path)
             out = pd.ExcelWriter(path)
             data.to_excel(out, data_kind)
             out.save()

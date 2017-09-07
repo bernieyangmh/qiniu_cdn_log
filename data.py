@@ -124,19 +124,24 @@ class DataCore(object):
         return pd.concat(chunks, ignore_index=True)
 
     def _change_data(self, data):
+        # 将3列与4列合并为3列
         data[3] = data[3] + data[4]
         d_time = pd.DataFrame(data[5].str.split(' ').tolist())
+        # 删除4，5列
         data.drop([4, 5], axis=1, inplace=True)
 
+        # 将d_time[0]的第一列插入data第四列，并命名为z
         data.insert(4, 'z', d_time[0])
         data.insert(5, 'y', d_time[1])
         data.insert(6, 'x', d_time[2])
         pr_data = pd.DataFrame(data)
 
+        # 重命名整个数据
         pr_data.rename(columns={0: "ip", 1: "hit", 2: 'response_time', 3: 'request_time', 'z': 'method',
                            'y': 'url', 'x': 'Protocol', 6: 'StatusCode', 7: 'TrafficSize',
                            8: 'referer', 9: 'UserAgent'}, inplace=True)
 
+        # 将request_time转为北京时间标准格式
         pr_data['request_time'] = pr_data['request_time'].apply(convert_time_format)
         self.data = pr_data
 
@@ -148,13 +153,13 @@ if __name__ == '__main__':
     d.generate_data()
     b = time.time()
     print("--日志行数--")
-    print(d.data.size)
+    print(d.data.shape[0])
     num = 20
     if sys.argv[1:]:
         num = int(sys.argv[1])
     print_summary_information(d, num)
-    print("数据分析花费时间")
+    print("数据分析耗时")
     print(time.time()-b)
-    print("汇总信息花费总时间")
+    print("总耗时")
     print(time.time()-a)
 

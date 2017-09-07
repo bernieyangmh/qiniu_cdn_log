@@ -78,4 +78,4 @@ class GetConfig(object):
 
 if __name__ == '__main__':
     g = GetConfig()
-    print(g.get_log('path'))
+    print(g.get_log())

@@ -25,7 +25,7 @@ class DataDisplay(object):
 
     def _drawing(self, data, kind, use_index, xlabel, ylabel, line_color,
                  fig_color, funciton, x_str, y_str, title, figsize, dis_tick):
-        self._construct_figure(figsize=figsize)
+        self._construct_figure(kind, figsize=figsize)
         if kind in ['bar', 'barh'] and isinstance(data, pd.core.frame.Series):
             self._construct_guideline_avg(data, color=line_color)
         self._construct_axe(data, funciton, kind)
@@ -37,8 +37,11 @@ class DataDisplay(object):
         self._ticks(dis_tick)
         plt.show()
 
-    def _construct_figure(self, figsize):
+    def _construct_figure(self, kind, figsize):
+        # 创建一个figure 和一个ax
         self.fig, self.ax0 = plt.subplots(figsize=figsize)
+        if kind == 'pie':
+            plt.subplots_adjust(left=0.45)
         plt.subplots_adjust()
 
     def _construct_axe(self, data, funciton, kind):

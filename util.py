@@ -265,6 +265,9 @@ def _path_and_mkdir(path):
 
 
 def ip_address(ip):
+    """
+    从淘宝和新浪获取ip的所在地
+    """
     sina_data = {"ip": ip,
                  "type": "sina"
                  }
@@ -278,7 +281,7 @@ def ip_address(ip):
 
     sina_district = (eval(sina_r.content.decode()))
 
-    taobao_data = {"ip": "112.51.57.40",
+    taobao_data = {"ip": ip,
                    "type": "taobao"
                    }
 

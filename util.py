@@ -3,9 +3,11 @@
 
 import re
 import time
+import os
+
 from sqlalchemy import create_engine
 import pandas as pd
-import os
+import requests
 
 __author__ = 'berniey'
 
@@ -262,3 +264,30 @@ def _path_and_mkdir(path):
     return path
 
 
+def ip_address(ip):
+    sina_data = {"ip": ip,
+                 "type": "sina"
+                 }
+
+    sina_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+        "X-Requested-With": "XMLHttpRequest"
+    }
+
+    sina_r = requests.post("https://www.ipip.net/ip/ajax/", data=sina_data, headers=sina_headers)
+
+    sina_district = (eval(sina_r.content.decode()))
+
+    taobao_data = {"ip": "112.51.57.40",
+                   "type": "taobao"
+                   }
+
+    taobao_headers = {
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+        "X-Requested-With": "XMLHttpRequest"
+    }
+
+    taobao_r = requests.post("https://www.ipip.net/ip/ajax/", data=taobao_data, headers=taobao_headers)
+    taobao_district = (eval(taobao_r.content.decode()))
+
+    return {"taobao": taobao_district, "sina": sina_district}

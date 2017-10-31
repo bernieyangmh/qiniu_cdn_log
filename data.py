@@ -18,14 +18,12 @@ class DataCore(object):
 
     def __init__(self, chunksize=10000000):
         # one size of chunk
-        print("Init data cls")
         self.chunk_size = chunksize
         self.chunks = []
         self.data = None
         self.files = self._get_files()
 
     def generate_data(self, is_qiniu='True'):
-        print("Generate Data")
         self._get_chunks()
         if (self.chunks or self.data) or isinstance(self.data, pd.core.frame.DataFrame):
             self.data = self._aggregate_data(self.chunks)

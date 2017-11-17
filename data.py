@@ -1,26 +1,26 @@
 # -*- coding: utf-8 -*-
 # !/usr/bin/env python
 
-from config import GetConfig
 
 import pandas as pd
-from util import singleton, convert_time_format
-from data_analysis import DataAnalysisMethod
-from util import parse_limit, print_summary_information
 import sys
+
+from config import GetConfig
+from util import singleton, convert_time_format, parse_limit, print_summary_information
+from data_analysis import DataAnalysisMethod
 
 
 __author__ = 'berniey'
 
 
-@singleton
+# @singleton
 class DataCore(object):
 
-    def __init__(self, chunksize=10000000):
+    def __init__(self, data=None, chunksize=10000000):
         # one size of chunk
         self.chunk_size = chunksize
         self.chunks = []
-        self.data = None
+        self.data = data
         self.files = self._get_files()
 
     def generate_data(self, is_qiniu='True'):
@@ -145,6 +145,8 @@ class DataCore(object):
 
 
 if __name__ == '__main__':
+
+    pd.set_option('display.max_colwidth', 1000)
     import time
     a = time.time()
     d = DataCore()
@@ -153,11 +155,43 @@ if __name__ == '__main__':
     print("--日志行数--")
     print(d.data.shape[0])
     num = 20
-    if sys.argv[1:]:
-        num = int(sys.argv[1])
-    print_summary_information(d, num)
-    print("数据分析耗时")
+    if sys.argv[1] == '-s':
+        if sys.argv[2:]:
+            num = int(sys.argv[2])
+            print_summary_information(d, num)
+
+    if sys.argv[1] == '-d':
+
+        print("\n")
+        print("指定url {} 的日志如下".format(sys.argv[2]))
+        print("\n")
+        aim_data = d.get_data_by_factor(limit=(0, 0), url=sys.argv[2])
+        print(aim_data.to_string())
+        print("\nurl总访问次数如下")
+        print(DataCore(aim_data).get_url_count(limit=(0, 0)).to_string())
+        print("\nurl总流量如下")
+        print(DataCore(aim_data).get_url_traffic(limit=(0, 0)).to_string())
+        print("\nurl各个状态码的访问次数如下")
+        print(DataCore(aim_data).get_url_code_count(limit=(0, 0)).to_string())
+
+    if sys.argv[1] == '-i':
+        print("\n")
+        print("指定ip {} 的日志如下".format(sys.argv[2]))
+        print("\n")
+        aim_data = d.get_data_by_factor(limit=(0, 0), ip=sys.argv[2])
+        print(aim_data.to_string())
+        print("\nip {} 总访问次数如下".format(sys.argv[2]))
+        print(DataCore(aim_data).get_ip_count(limit=(0, 0)).to_string())
+        print("\nip {} 总流量如下".format(sys.argv[2]))
+        print(DataCore(aim_data).get_ip_traffic(limit=(0, 0)).to_string())
+        print("\nip {} 各个状态码的访问次数如下".format(sys.argv[2]))
+        print(DataCore(aim_data).get_ip_code_count(limit=(0, 0)).to_string())
+    print("\n--数据分析耗时--")
     print(time.time()-b)
-    print("总耗时")
+    print("--总耗时--")
     print(time.time()-a)
+
+
+
+
 

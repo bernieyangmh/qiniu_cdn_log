@@ -1,4 +1,4 @@
-# 对访问日志数据进行读取，清洗，分析，绘图和储存
+# 对七牛cdn日志数据进行读取，清洗，分析，绘图和储存
 
 要求的日志格式为七牛cdn日志格式
  ```
@@ -12,7 +12,6 @@
 | 14.163.128.14|HIT |1| 2017-07-12 22:38:18|GET |http://aaa.bbb.com/cc.jpg| -|200 |1024| www.baidu.com | "Mozilla/5.0 (Linux; Android ……|
 
 
-[github链接地址](https://github.com/bernieyangmh/req_data_op)
 
 | 函数名      |    API_PATH | 数据类型  |
 | --------: | --------:| :--: |

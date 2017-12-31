@@ -48,7 +48,7 @@ log_path:/Users/berniey/Documents/fun/Qiniu-cdnLog/log_path
 | pg_password      |   123 | pg数据库密码  |
 
 ### 2.命令行调用
-在data.py调用实例d的函数，通过命令`python3 data.py`获得指定的数据
+在data.py调用实例d的函数，通过命令`python3 data.py -s`获得指定的数据
 数据格式如下
 
 ```
@@ -115,6 +115,12 @@ log_path:/Users/berniey/Documents/fun/Qiniu-cdnLog/log_path
 总耗时
 6.261575222015381
 ```
+查询指定ip
+```-i <ip> [limit]```
+
+查询指定url
+```-d <url> [limit]```
+
 
 
 ### 3.接口调用

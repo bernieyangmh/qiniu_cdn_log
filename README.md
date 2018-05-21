@@ -13,19 +13,19 @@
 
 
 
-| 函数名      |    API_PATH | 数据类型  |
+| 函数名      |    API PATH | 数据类型  |
 | --------: | --------:| :--: |
-| get_data_by_factor      |    get_total_data | 根据限制条件返回清洗后的日志数据(不支持绘图)  |
-| get_url_traffic  | get_url_traffic |  根据url返回对应的流量  |
-| get_url_count     |   get_url_count |  根据url返回对应的访问次数  |
-| get_ip_traffic      |    get_ip_traffic | 根据ip返回对应的流量  |
-| get_ip_count      |   get_ip_count | 根据ip返回对应的访问次数  |
-| get_code_count      |    get_code_count | 根据状态码返回对应的访问次数  |
-| get_ip_url_code_count      |   get_ip_url_code_count | 根据ip、url返回不同状态码对应的访问次数  |
-| get_url_code_count      |    get_url_code_count | 根据url和状态码返回对应的访问次数  |
-| get_ip_code_count      |    get_ip_code_count | 根据ip和状态码返回对应的访问次数  |
-| get_time_traffic      |    get_time_traffic | 返回指定时间段产生的流量  |
-| get_time_count      |    get_time_count | 返回指定时间段对应的访问次数  |
+| get_data_by_factor      |    total_data | 根据限制条件返回清洗后的日志数据(不支持绘图)  |
+| get_url_traffic  | url_traffic |  根据url返回对应的流量  |
+| get_url_count     |   url_count |  根据url返回对应的访问次数  |
+| get_ip_traffic      |    ip_traffic | 根据ip返回对应的流量  |
+| get_ip_count      |   ip_count | 根据ip返回对应的访问次数  |
+| get_code_count      |    code_count | 根据状态码返回对应的访问次数  |
+| get_ip_url_code_count      |   ip_url_code_count | 根据ip、url返回不同状态码对应的访问次数  |
+| get_url_code_count      |    url_code_count | 根据url和状态码返回对应的访问次数  |
+| get_ip_code_count      |    ip_code_count | 根据ip和状态码返回对应的访问次数  |
+| get_time_traffic      |    time_traffic | 返回指定时间段产生的流量  |
+| get_time_count      |    time_count | 返回指定时间段对应的访问次数  |
 
 ### 1.配置日志路径和环境变量
 ```
@@ -40,7 +40,7 @@ log_path:/Users/berniey/Documents/fun/Qiniu-cdnLog/log_path
 
 >**注意：**数据库名称默认为cdnlog。
 
-| name      |    Value | 涵义  |
+| name      |    Value | 含义  |
 | :-------- | --------:| :--: |
 | mysql_role  | work |  mysql数据库用户   |
 | mysql_password     |   123 |  mysql数据库密码  |

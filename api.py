@@ -28,7 +28,7 @@ def index():
     return jsonify(api_list)
 
 
-@app.route('/get_total_data', methods=['GET'])
+@app.route('/total_data', methods=['GET'])
 def show_log_data():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -44,7 +44,7 @@ def show_log_data():
     return data.to_json(orient=orient)
 
 
-@app.route('/get_url_traffic', methods=['GET'])
+@app.route('/url_traffic', methods=['GET'])
 def show_url_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -55,7 +55,7 @@ def show_url_traffic():
                              x_str='x', y_str='y', title='URL&Traffic', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_url_count', methods=['GET'])
+@app.route('/url_count', methods=['GET'])
 def show_url_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -79,7 +79,7 @@ def show_ip_traffic():
                              x_str='x', y_str='y', title='IP&Traffic', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_ip_count', methods=['GET'])
+@app.route('/ip_count', methods=['GET'])
 def show_ip_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -103,7 +103,7 @@ def show_code_count():
                              x_str='x', y_str='y', title='Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_ip_url_code_count', methods=['GET'])
+@app.route('/ip_url_code_count', methods=['GET'])
 def show_ip_url_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -115,7 +115,7 @@ def show_ip_url_code_count():
                              x_str='x', y_str='y', title='Ip_Url_Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_url_code_count', methods=['GET'])
+@app.route('/url_code_count', methods=['GET'])
 def show_url_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -127,7 +127,7 @@ def show_url_code_count():
                              x_str='x', y_str='y', title='URL_Code&Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_ip_code_count', methods=['GET'])
+@app.route('/ip_code_count', methods=['GET'])
 def show_ip_code_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -139,7 +139,7 @@ def show_ip_code_count():
                              x_str='x', y_str='y', title='IP&Code_Count', figsize=(12, 7), is_qiniu=is_qiniu)
 
 
-@app.route('/get_time_traffic', methods=['GET'])
+@app.route('/time_traffic', methods=['GET'])
 def show_time_traffic():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
@@ -151,7 +151,7 @@ def show_time_traffic():
                              start_time=start_time, end_time=end_time, is_qiniu=is_qiniu)
 
 
-@app.route('/get_time_count', methods=['GET'])
+@app.route('/time_count', methods=['GET'])
 def show_time_count():
     error, kind, limit, use_index, is_show, dis_tick, ip, referer, start_time, end_time, is_qiniu = parse_requests(request)
     if error:
